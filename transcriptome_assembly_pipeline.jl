@@ -220,7 +220,7 @@ function main(path, organism_name, lineage_dataset, prey, what_to_run)
             -task megablast
             -query $transcripts_file
             -db /Data/databases/NCBI_NT/nt
-            -outfmt 6 qseqid staxids bitscore std ssciorganism_names sskingdoms stitle
+            -outfmt '6 qseqid staxids bitscore std ssciorganism_names sskingdoms stitle'
             -culling_limit 5
             -num_threads 24
             -evalue 1e-25
