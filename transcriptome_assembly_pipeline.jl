@@ -279,7 +279,7 @@ function main(path, organism_name, lineage_dataset, prey, what_to_run)
         run(`/opt/blobtools/blobtools blobplot
             --infile $blobtools_create_output_file
             --rank family`)
-        run(`"/opt/blobtools/blobtools blobplot
+        run(`/opt/blobtools/blobtools blobplot
             --infile $blobtools_create_output_file
             --rank phylum`)
         run(`/opt/blobtools/blobtools blobplot
