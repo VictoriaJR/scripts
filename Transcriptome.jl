@@ -12,17 +12,9 @@ Create a transcripts where `name` has been removed by keeping from `transcripts`
 """
 function lookup_match(transcripts, name, list)
     endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
-
-    open(list, "r") do f
-        lines_list = readlines(f)
-    end
-
-    open(transcripts, "r") do f
-        lines_transcripts = split(read(f), ">"; keepempty = false)
-    end
-
+	lines_list = readlines(list)
+	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
     clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
-
     open(clean_transcripts, "w") do f
         for line_transcripts in lines_transcripts
             if any(line_list -> occursin(line_list, line_transcripts), lines_list)
@@ -30,7 +22,6 @@ function lookup_match(transcripts, name, list)
             end
         end
     end
-
     return clean_transcripts
 end
 
@@ -41,17 +32,9 @@ Create a transcripts where `name` has been removed by keeping from `transcripts`
 """
 function lookup_mismatch(transcripts, name, list)
     endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
-
-    open(list, "r") do f
-        lines_list = readlines(f)
-    end
-
-    open(transcripts, "r") do f
-        lines_transcripts = split(read(f), ">"; keepempty = false)
-    end
-
+	lines_list = readlines(list)
+	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
     clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
-
     open(clean_transcripts, "w") do f
         for line_transcripts in lines_transcripts
             if !any(line_list -> occursin(line_list, line_transcripts), lines_list)
@@ -59,7 +42,6 @@ function lookup_mismatch(transcripts, name, list)
             end
         end
     end
-
     return clean_transcripts
 end
 
@@ -84,14 +66,12 @@ end
 Given an organism name `organism`, rename the headers inside the file `file`.
 """
 function file_rename_headers(file, organism)
-    open(file, "r") do f
-        lines = split(read(f), ">"; keepempty = false)
-    end
+	lines = split(read(file, String), ">"; keepempty = false)
     renamed = file * ".renamed"
     open(renamed, "w") do f
         for (i, line) in enumerate(lines)
 			seq = replace(split(line, "\n"; limit = 2)[2], "*" => "")
-            write(f, ">" * organism * "_" * str(i) * "\n" * seq)
+            write(f, ">" * organism * "_" * string(i) * "\n" * seq)
         end
     end
     return renamed
@@ -108,9 +88,7 @@ function dir_rename_headers_phylo(dir, suffix, organism)
 end
 
 function file_rename_headers_phylo(file, organism)
-	open(file, "r") do f
-		lines = split(read(f), ">"; keepempty = false)
-	end
+	lines = split(read(file, String), ">"; keepempty = false)
     renamed = file * ".renamed"
 	open(renamed, "w") do f
 	    for line in lines
@@ -145,14 +123,8 @@ function dir_extract_original_and_coloured_taxa(dir, colour)
 end
 
 function file_extract_original_and_coloured_taxa(original, new, coloured_tree, colour)
-	open(original, "r") do f
-		read_original = read(f)
-	end
-
-	open(new, "r") do f
-		lines_new = split(read(f), ">"; keepempty = false)
-	end
-
+	read_original = read(original, String)
+	lines_new = split(read(new, String), ">"; keepempty = false)
 	coloured = []
 	open(coloured_tree, "r") do f
 		for line in eachline(f)
@@ -161,9 +133,7 @@ function file_extract_original_and_coloured_taxa(original, new, coloured_tree, c
 			end
 		end
 	end
-
 	clean_new = new * ".cleaned"
-
 	open(clean_new, "w") do f
 		for line_new in lines_new
 			if any(x -> occursin(x, line_new), coloured) || occursin(line_new, read_original)
@@ -171,19 +141,16 @@ function file_extract_original_and_coloured_taxa(original, new, coloured_tree, c
 			end
 		end
 	end
-
 	return clean_new
 end
 
 function single_line_fasta(file)
-	open(file, "r") do f
-		lines = split(read(f), ">"; keepempty = false)
-	end
+	lines = split(read(file, String), ">"; keepempty = false)
 	out_file = file * ".sl"
 	open(out_file, "w") do f
 		for line in lines
 			parts = split(line, "\n"; limit = 2)
-			write(f, ">" * parts[1] * "\n" * replace(parts[2], "\n" => ""))
+			write(f, ">" * parts[1] * "\n" * replace(parts[2], "\n" => "") * "\n")
 		end
 	end
 	return out_file
@@ -203,9 +170,7 @@ function combine_datasets(out_dir, in_dirs...)
 
 	for dir in in_dirs # loop through the directories given as arguments
 	    for f in readdir(dir; join = false) # loop through each file within a directory
-			open(joinpath(dir, f), "r") do io
-				lines = split(read(io), ">")
-			end
+			lines = split(read(joinpath(dir, f), String), ">"; keepempty = false)
 			f_out = joinpath(out_dir, f * ".out")
 	        open(f_out, "a") do io # append sequence name and sequence protein in the corresponding out file
 	            for line in lines
