@@ -1,4 +1,4 @@
-## Initial Setup - julia PATH/ organism_name lineage_dataset NO_PREY
+## Initial Setup - julia PATH/ organism_name lineage_dataset NO_PREY [optional: steps...]
 
 path = ARGS[1] # path of the two raw sequence reads file
 path[end] == "/" || path *= "/"
