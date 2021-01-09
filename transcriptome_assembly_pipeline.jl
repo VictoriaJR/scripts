@@ -1,4 +1,5 @@
-## Initial Setup - julia PATH/ organism_name lineage_dataset NO_PREY [optional: steps...]
+## Initial Setup
+# Example: julia PATH/ organism_name lineage_dataset NO_PREY [optional: steps...]
 
 path = ARGS[1] # path of the two raw sequence reads file
 if path[end] != "/"
@@ -189,12 +190,15 @@ function main(path, organism_name, lineage_dataset, prey, what_to_run)
     # use BUSCO to estimate transcriptome coverage
 
     if check_busco
+        path_ = pwd()
+        cd("/Data/victoria/db/")
         run(`busco
             --in $transcripts_file
             --out $(organism_name * "_transcripts.fasta_BUSCO")
             --out_path $rnaspades_dir
             --lineage_dataset $lineage_dataset
             --mode transcriptome`)
+        cd(path_)
     end
 
 
