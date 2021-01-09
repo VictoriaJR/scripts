@@ -1,7 +1,9 @@
 ## Initial Setup - julia PATH/ organism_name lineage_dataset NO_PREY [optional: steps...]
 
 path = ARGS[1] # path of the two raw sequence reads file
-path[end] == "/" || path *= "/"
+if path[end] != "/"
+    path *= "/"
+end
 
 organism = ARGS[2] # name of the organism under study
 
@@ -77,7 +79,9 @@ fastqc_dir = path * "fastqc_raw_reads/"
 raw_seq_reads_1 = path * organism_name * "_R1_001.fastq.gz"
 raw_seq_reads_2 = path * organism_name * "_R2_001.fastq.gz"
 if check_fastqc
-    isdir(fastqc_dir) || mkdir(fastqc_dir)
+    if !isdir(fastqc_dir)
+        mkdir(fastqc_dir)
+    end
     run(`fastqc -o $fastqc_dir $raw_seq_reads_1 $raw_seq_reads_2`)
 end
 
@@ -87,7 +91,9 @@ cutadapt_dir = path * "cutadapt/"
 cutadapt_output_file = cutadapt_dir * organism_name * "_R1_001.cutadapt.fastq"
 cutadapt_paired_output_file = cutadapt_dir * organism_name * "_R2_001.cutadapt.fastq"
 if check_cutadapt
-    isdir(cutadapt_dir) || mkdir(cutadapt_dir)
+    if !isdir(cutadapt_dir)
+        mkdir(cutadapt_dir)
+    end
     run(`cutadapt
         -a AGATGTGTATAAGAGACAG
         -a AAGCAGTGGTATCAACGCAGAGT
@@ -120,7 +126,9 @@ end
 
 rnaspades_dir = path * "../" * organism_name * "_rnaspades/"
 if check_rnaspades
-    isdir(rnaspades_dir) || mkdir(rnaspades_dir)
+    if !isdir(rnaspades_dir)
+        mkdir(rnaspades_dir)
+    end
     run(`/opt/SPAdes-3.13.0-Linux/bin/spades.py
         --rna
         --pe1-1 $cutadapt_out_file
@@ -149,7 +157,9 @@ end
 ## 3. LOOK FOR CONTAMINATION
 
 contamination_dir = rnaspades_dir * organism_name * "_contamination_removal/"
-isdir(contamination_dir) || mkdir(contamination_dir)
+if !isdir(contamination_dir)
+    mkdir(contamination_dir)
+end
 
 # use BLASTN to perform a megablast with nt database
 
