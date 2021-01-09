@@ -13,6 +13,8 @@ prey = ARGS[4] # e.g. Procryptobia, Spumella
 
 what_to_run = ARGS[5:end]
 
+main(path, organism_name, lineage_dataset, prey, what_to_run)
+
 function remove_name_hits(dir_path, name, blobtools_view_file, transcripts_file)
     contigs_list = dir_path * "no_" * name * "_contigs.list"
     run(pipeline(`grep -Ev $name $blobtools_view_file`, `cut -f 1`, contigs_list))
@@ -290,7 +292,6 @@ function main(path, organism_name, lineage_dataset, prey, what_to_run)
             --out taxonomy
             --rank all
             --taxrule bestsum`)
-        end
         cd(path_)
     end
     blobtools_view_output_file = contamination_dir * "taxonomy." * blobtools_prefix * ".blobDB.bestsum.table.txt"
