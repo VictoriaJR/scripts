@@ -179,8 +179,8 @@ function main(path, organism_name, lineage_dataset, prey, what_to_run)
         end
         run(`/opt/SPAdes-3.13.0-Linux/bin/spades.py
             --rna
-            --pe1-1 $cutadapt_out_file
-            --pe1-2 $cutadapt_paired_out_file
+            --pe1-1 $cutadapt_output_file
+            --pe1-2 $cutadapt_paired_output_file
             --threads 24
             --memory 100
             -o $rnaspades_dir`)
