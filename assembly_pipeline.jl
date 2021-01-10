@@ -14,7 +14,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
     if dir_path[end] != "/"
         dir_path *= "/"
     end
-    isdir(dir_path) || return throw(ArgumentError(string("Input path ", dir_path, " is not a directory"))
+    isdir(dir_path) || return throw(ArgumentError(string("Input path ", dir_path, " is not a directory")))
 
     check_fastqc = false
     check_cutadapt = false

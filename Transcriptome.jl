@@ -11,18 +11,18 @@ include("assembly_pipeline.jl")
 Create a transcripts where `name` has been removed by keeping from `transcripts` everything in `list`.
 """
 function lookup_match(transcripts, name, list)
-    endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
+	endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
 	lines_list = readlines(list)
 	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
-    clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
-    open(clean_transcripts, "w") do f
-        for line_transcripts in lines_transcripts
-            if any(line_list -> occursin(line_list, line_transcripts), lines_list)
-                write(f, ">" * line_transcripts)
-            end
-        end
-    end
-    return clean_transcripts
+	clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
+	open(clean_transcripts, "w") do f
+    	for line_transcripts in lines_transcripts
+        	if any(line_list -> occursin(line_list, line_transcripts), lines_list)
+            	write(f, ">" * line_transcripts)
+        	end
+    	end
+	end
+	return clean_transcripts
 end
 
 """
@@ -31,11 +31,11 @@ end
 Create a transcripts where `name` has been removed by keeping from `transcripts` everything not in `list`.
 """
 function lookup_mismatch(transcripts, name, list)
-    endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
+	endswith(transcripts, ".fasta") || return throw(ArgumentError(string(transcripts, " must be a file ending with .fasta")))
 	lines_list = readlines(list)
 	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
-    clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
-    open(clean_transcripts, "w") do f
+	clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
+	open(clean_transcripts, "w") do f
         for line_transcripts in lines_transcripts
             if !any(line_list -> occursin(line_list, line_transcripts), lines_list)
                 write(f, ">" * line_clean_transcripts)
@@ -69,7 +69,7 @@ function file_rename_headers(file, organism)
 	lines = split(read(file, String), ">"; keepempty = false)
     renamed = file * ".renamed"
     open(renamed, "w") do f
-        for (i, line) in enumerate(lines)
+    	for (i, line) in enumerate(lines)
 			seq = replace(split(line, "\n"; limit = 2)[2], "*" => "")
             write(f, ">" * organism * "_" * string(i) * "\n" * seq)
         end
