@@ -178,7 +178,7 @@ function combine_datasets(out_dir, in_dirs...)
 	                seq_name = split(parts[1], " "; limit = 2)[1]
 	                seq = parts[2]
 					seq_f_out = dict_seq[f_out]
-	                if !(protein_seq in seq_f_out)
+	                if !(seq in seq_f_out)
 	                    write(io, ">" * seq_name * "\n") # write sequence name
 	                    write(io, seq) # write protein sequence
 	                    push!(seq_f_out, seq) # add the new protein sequence to the list corresponding to the in-file
