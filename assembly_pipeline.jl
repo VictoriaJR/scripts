@@ -215,7 +215,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
         run(`bowtie2-build $transcripts_file $bowtie2_prefix`)
         run(`bowtie2
             -x $bowtie2_prefix
-            -U $cutadapt_output_file, $cutadapt_paired_output_file
+            -U $cutadapt_output_file,$cutadapt_paired_output_file
             -S $bowtie2_output_file
             -p 24`)
         cd(path_)
