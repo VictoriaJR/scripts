@@ -268,7 +268,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
     if check_contamination_removal
         for name in contaminations
             contigs_list = contamination_dir * "no_" * name * "_contigs.list"
-            run(pipeline(`grep -Ev $name $blobtools_view_file`, `cut -f 1`, contigs_list))
+            run(pipeline(`grep -Ev $name $blobtools_view_output_file`, `cut -f 1`, contigs_list))
             clean_transcripts_file = lookup_match(clean_transcripts_file, name, contigs_list)
             removed_contaminations *= "no_" * name * "_" # e.g. "no_Chordata_no_Bacteria_no_Arthropoda_"
         end
