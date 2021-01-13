@@ -306,7 +306,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
         database = "/Data/databases/"
-        for f in readdir("/Data/databases/")
+        for f in readdir("/Data/databases/"; join = false)
             if startswith(f, "uniprot_sprot_")
                 database *= f
                 break
