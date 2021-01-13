@@ -194,7 +194,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
 
     blastx_output_file = contamination_dir * "transcripts.fasta.vs.uniprot_ref.mts1.1e25.out"
     if check_diamond_blastx
-        run(`/Data/victoria/bin/diamond blastx
+        run(`/home/glax/miniconda3/bin/diamond blastx
             --query $transcripts_file
             --max-target-seqs 1
             --sensitive
