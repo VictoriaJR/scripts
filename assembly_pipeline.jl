@@ -263,18 +263,20 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
     # clean transcripts
 
     clean_transcripts_file = transcripts_file
-    removed_contaminations = ""
-
+    
     if check_contamination_removal
         for name in contaminations
             contigs_list = contamination_dir * "no_" * name * "_contigs.list"
             run(pipeline(`grep -Ev $name $blobtools_view_output_file`, `cut -f 1`, contigs_list))
             clean_transcripts_file = lookup_match(clean_transcripts_file, name, contigs_list)
-            removed_contaminations *= "no_" * name * "_" # e.g. "no_Chordata_no_Bacteria_no_Arthropoda_"
         end
     end
-
+    
     if check_prey_removal
+        removed_contaminations = ""
+        for name in contaminations
+            removed_contaminations *= "no_" * name * "_" # e.g. "no_Chordata_no_Bacteria_no_Arthropoda_"
+        end
         prey_blastn_output_file = contamination_dir * organism * "_" * removed_contaminations * "vs_" * prey * ".blastnout"
         run(`blastn
             -task megablast
