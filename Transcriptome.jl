@@ -16,11 +16,12 @@ function lookup_match(transcripts, name, list)
 	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
 	clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
 	open(clean_transcripts, "w") do f
-    	for line_transcripts in lines_transcripts
-        	if any(line_list -> occursin(line_list, line_transcripts), lines_list)
-            	write(f, ">" * line_transcripts)
-        	end
-    	end
+		for line_transcripts in lines_transcripts
+			header = split(line_transcripts, "\n"; limit = 2)[1]
+			if any(line_list -> line_list == header, lines_list)
+				write(f, ">" * line_transcripts)
+			end
+		end
 	end
 	return clean_transcripts
 end
@@ -36,13 +37,14 @@ function lookup_mismatch(transcripts, name, list)
 	lines_transcripts = split(read(transcripts, String), ">"; keepempty = false)
 	clean_transcripts = transcripts[1:end-6] * "_no_" * name * ".fasta"
 	open(clean_transcripts, "w") do f
-        for line_transcripts in lines_transcripts
-            if !any(line_list -> occursin(line_list, line_transcripts), lines_list)
-                write(f, ">" * line_clean_transcripts)
-            end
-        end
-    end
-    return clean_transcripts
+		for line_transcripts in lines_transcripts
+			header = split(line_transcripts, "\n"; limit = 2)[1]
+			if !any(line_list -> line_list == header, lines_list)
+				write(f, ">" * line_clean_transcripts)
+			end
+		end
+	end
+	return clean_transcripts
 end
 
 """
@@ -51,13 +53,13 @@ end
 Given an organism name `organism`, rename the headers inside every files in the directory `dir` which end with `suffix`.
 """
 function dir_rename_headers(dir, suffix, organism)
-    renamed = String[]
-    for f in readdir(dir; join = true)
-        if endswith(f, suffix)
-            push!(renamed, file_rename_headers(f, organism))
-        end
-    end
-    return renamed
+	renamed = String[]
+	for f in readdir(dir; join = true)
+		if endswith(f, suffix)
+			push!(renamed, file_rename_headers(f, organism))
+		end
+	end
+	return renamed
 end
 
 """
@@ -67,35 +69,35 @@ Given an organism name `organism`, rename the headers inside the file `file`.
 """
 function file_rename_headers(file, organism)
 	lines = split(read(file, String), ">"; keepempty = false)
-    renamed = file * ".renamed"
-    open(renamed, "w") do f
-    	for (i, line) in enumerate(lines)
+	renamed = file * ".renamed"
+	open(renamed, "w") do f
+		for (i, line) in enumerate(lines)
 			seq = replace(split(line, "\n"; limit = 2)[2], "*" => "")
-            write(f, ">" * organism * "_" * string(i) * "\n" * seq)
-        end
-    end
-    return renamed
+			write(f, ">" * organism * "_" * string(i) * "\n" * seq)
+		end
+	end
+	return renamed
 end
 
 function dir_rename_headers_phylo(dir, suffix, organism)
-    renamed = String[]
-    for f in readdir(dir; join = true)
-        if endswith(f, suffix)
-            push!(renamed, file_rename_headers_phylo(f, organism))
-        end
-    end
-    return renamed
+	renamed = String[]
+	for f in readdir(dir; join = true)
+		if endswith(f, suffix)
+			push!(renamed, file_rename_headers_phylo(f, organism))
+		end
+	end
+	return renamed
 end
 
 function file_rename_headers_phylo(file, organism)
 	lines = split(read(file, String), ">"; keepempty = false)
-    renamed = file * ".renamed"
+	renamed = file * ".renamed"
 	open(renamed, "w") do f
-	    for line in lines
+		for line in lines
 			seq = replace(split(line, "\n"; limit = 2)[2], "*" => "")
-	       	write(f, ">" * organism * "@" * split(line, " "; limit = 2)[1] * "\n" * seq)
+			write(f, ">" * organism * "@" * split(line, " "; limit = 2)[1] * "\n" * seq)
 		end
-    end
+	end
 	return renamed
 end
 
@@ -125,7 +127,7 @@ end
 function file_extract_original_and_coloured_taxa(original, new, coloured_tree, colour)
 	read_original = read(original, String)
 	lines_new = split(read(new, String), ">"; keepempty = false)
-	coloured = []
+	coloured = String[]
 	open(coloured_tree, "r") do f
 		for line in eachline(f)
 			if occursin(colour, line)
@@ -161,27 +163,27 @@ function combine_datasets(out_dir, in_dirs...)
 	dict_seq = Dict{String,Vector{String}}() # creates a dictionnary according to the relation: file => list of protein sequence
 
 	for dir in in_dirs # loop through the directories given as arguments
-	    for f in readdir(dir; join = false) # loop through each file within a directory
+		for f in readdir(dir; join = false) # loop through each file within a directory
 			f_out = joinpath(out_dir, f * ".out")
-	        close(open(f_out, "a")) # creates a new file if it does not already exist
-	        push!(dict_seq, f_out => [""])
+			close(open(f_out, "a")) # creates a new file if it does not already exist
+			push!(dict_seq, f_out => [""])
 		end
 	end
 
 	for dir in in_dirs # loop through the directories given as arguments
-	    for f in readdir(dir; join = false) # loop through each file within a directory
+		for f in readdir(dir; join = false) # loop through each file within a directory
 			lines = split(read(joinpath(dir, f), String), ">"; keepempty = false)
 			f_out = joinpath(out_dir, f * ".out")
-	        open(f_out, "a") do io # append sequence name and sequence protein in the corresponding out file
-	            for line in lines
-	                parts = split(line, "\n"; limit = 2)
-	                seq_name = split(parts[1], " "; limit = 2)[1]
-	                seq = parts[2]
+			open(f_out, "a") do io # append sequence name and sequence protein in the corresponding out file
+				for line in lines
+					parts = split(line, "\n"; limit = 2)
+					seq_name = split(parts[1], " "; limit = 2)[1]
+					seq = parts[2]
 					seq_f_out = dict_seq[f_out]
-	                if !(seq in seq_f_out)
-	                    write(io, ">" * seq_name * "\n") # write sequence name
-	                    write(io, seq) # write protein sequence
-	                    push!(seq_f_out, seq) # add the new protein sequence to the list corresponding to the in-file
+					if !(seq in seq_f_out)
+						write(io, ">" * seq_name * "\n") # write sequence name
+						write(io, seq) # write protein sequence
+						push!(seq_f_out, seq) # add the new protein sequence to the list corresponding to the in-file
 					end
 				end
 			end
@@ -191,7 +193,7 @@ function combine_datasets(out_dir, in_dirs...)
 	return collect(keys(dict_seq)) # turns KeySet into Vector
 end
 
-    export lookup_match, lookup_mismatch, dir_rename_headers, file_rename_headers,
+	export lookup_match, lookup_mismatch, dir_rename_headers, file_rename_headers,
 		dir_extract_original_and_coloured_taxa, file_rename_headers_phylo,
 		dir_rename_headers_phylo, file_extract_original_and_coloured_taxa,
 		single_line_fasta, combine_datasets
