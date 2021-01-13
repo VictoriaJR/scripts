@@ -299,11 +299,11 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
     ## 4. TRANSLATE TO PEPTIDES
 
     if check_transdecoder
-        # Identify the ORFs in the cleaned fasta assembly using ###TransDecoder:
         path_ = pwd()
         cd(rnaspades_dir)
+        # Identify the ORFs in the cleaned fasta assembly using ###TransDecoder:
+
         run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.3.0/TransDecoder.LongOrfs -t $clean_transcripts_file`)
-        cd(path_)
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
@@ -329,6 +329,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
         run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.3.0/TransDecoder.Predict
             -t $clean_transcripts_file
             --retain_blastp_hits $blastp_output`)
+        cd(path_)
 
         dir_rename_headers(rnaspades_dir, ".transdecoder.pep",  organism)
     end
