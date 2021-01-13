@@ -231,7 +231,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
         path_ = pwd()
         cd(contamination_dir)
         run(`/opt/blobtools/blobtools taxify
-            -f $blobtools_taxify_output_file
+            -f $blastx_output_file
             -m /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.taxids
             -s 0
             -t 2`)
