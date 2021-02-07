@@ -2,6 +2,8 @@ module Transcriptome
 
 include("assembly_pipeline.jl")
     export transcriptome_assembly
+include("assembly_pipeline_unpaired.jl")
+    export transcriptome_assembly_unpaired
 
 ## utils
 
