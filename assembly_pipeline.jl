@@ -147,7 +147,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
             --memory 100
             -o $rnaspades_dir`)
     end
-    transcripts_file = rnaspades_dir * "transcripts.fasta"
+    transcripts_file = rnaspades_dir * "soft_filtered_transcripts.fasta"
 
     # use BUSCO to estimate transcriptome coverage
 
