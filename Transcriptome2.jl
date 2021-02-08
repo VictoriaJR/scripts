@@ -50,7 +50,7 @@ function convert_old_workflow_transcriptome_assembly(dir_path, organism)
 	cutadapt_dir = dir_path * "cutadapt/"
 	transcriptome_dir = dir_path * "transcriptome/"
 	mv(dir_path * "../" * organism * "_rnaspades/", transcriptome_dir)
-	contamination_dir = dir_path * "contamination_removal/"
+	contamination_dir = transcriptome_dir * "contamination_removal/"
 	mv(dir_path * "../" * organism * "_rnaspades/" * organism * "_contamination_removal/", contamination_dir)
 	return fastqc_dir, cutadapt_dir, transcriptome_dir, contamination_dir
 end
@@ -70,7 +70,7 @@ function setup_workflow_transcriptome_assembly(dir_path)
     if !isdir(transcriptome_dir)
         mkdir(transcriptome_dir)
     end
-    contamination_dir = dir_path * "contamination_removal/"
+    contamination_dir = transcriptome_dir * "contamination_removal/"
     if !isdir(contamination_dir)
         mkdir(contamination_dir)
     end
