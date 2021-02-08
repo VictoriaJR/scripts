@@ -4,6 +4,8 @@ include("assembly_pipeline.jl")
     export transcriptome_assembly
 include("assembly_pipeline_unpaired.jl")
     export transcriptome_assembly_unpaired
+include("assembly_pipeline_paired_2_transcriptomes.jl")
+    export transcriptome_assembly_paired_2_transcriptomes
 
 ## utils
 
