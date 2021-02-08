@@ -74,7 +74,7 @@ function setup_workflow_transcriptome_assembly(dir_path)
     if !isdir(contamination_dir)
         mkdir(contamination_dir)
     end
-    print_file_tree(dir_path, 0)
+    print_file_tree(dir_path, 1)
     return fastqc_dir, cutadapt_dir, transcriptome_dir, contamination_dir
 end
 
