@@ -126,10 +126,10 @@ function transcriptome_assembly_unpaired(dir_path::AbstractString, organism::Abs
     # use SPADES to assemble
 
     rnaspades_dir = dir_path * "../" * organism * "_rnaspades/"
+    if !isdir(rnaspades_dir)
+        mkdir(rnaspades_dir)
+    end
     if check_rnaspades
-        if !isdir(rnaspades_dir)
-            mkdir(rnaspades_dir)
-        end
         run(`/Data/victoria/software/SPAdes-3.15.0-Linux/bin/spades.py
             --rna
             --s1 $cutadapt_output_file
