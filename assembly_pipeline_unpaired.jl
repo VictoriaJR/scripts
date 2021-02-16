@@ -103,7 +103,22 @@ function transcriptome_assembly_unpaired(dir_path::AbstractString, organism::Abs
             mkdir(cutadapt_dir)
         end
         run(`cutadapt
-            -a CCCATGTACTCTGCGTTGATACCACTGCTT
+            -a AGATGTGTATAAGAGACAG
+            -a AAGCAGTGGTATCAACGCAGAGT
+            -a AGATGTGTATAAGAGACAG
+            -a AAGCAGTGGTATCAACGCAGAGT
+            -a TACTCTGCGTTGATACCACTGCTT
+            -a ACTCTGCGTTGATACCACTGCTT
+            -a TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+            -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
+            -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
+            -a AGATGTGTATAAGAGACAG
+            -A AAGCAGTGGTATCAACGCAGAGT
+            -A TACTCTGCGTTGATACCACTGCTT
+            -A ACTCTGCGTTGATACCACTGCTT
+            -A TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+            -A CTGTCTCTTATACACATCTGACGCTGCCGACGA
+            -A CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
             -o $cutadapt_output_file
             $raw_seq_reads`)
     end
