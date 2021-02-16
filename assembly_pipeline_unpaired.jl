@@ -113,12 +113,6 @@ function transcriptome_assembly_unpaired(dir_path::AbstractString, organism::Abs
             -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
             -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
             -a AGATGTGTATAAGAGACAG
-            -A AAGCAGTGGTATCAACGCAGAGT
-            -A TACTCTGCGTTGATACCACTGCTT
-            -A ACTCTGCGTTGATACCACTGCTT
-            -A TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
-            -A CTGTCTCTTATACACATCTGACGCTGCCGACGA
-            -A CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
             -o $cutadapt_output_file
             $raw_seq_reads`)
     end
