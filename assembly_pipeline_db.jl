@@ -1,12 +1,12 @@
 """
-    transcriptome_assembly(dir_path, organism, steps)
+    transcriptome_assembly_db(dir_path, organism, steps)
 
 Execute the transcriptome assembly pipeline consisting of the steps: "cutadapt", "flash2".
 Inputs:
 - `dir_path` = dir_path of the two raw sequence reads files
 - `organism` = name of the organism under study. This will be used as a prefix throughout
 """
-function transcriptome_assembly(dir_path::AbstractString, organism::AbstractString)
+function transcriptome_assembly_db(dir_path::AbstractString, organism::AbstractString)
     if dir_path[end] != "/"
         dir_path *= "/"
     end
