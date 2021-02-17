@@ -10,7 +10,7 @@ Inputs:
 - `prey` = name of the prey, e.g. "Procryptobia" for Colp34, "Spumella" for Psammosa pacifica
 - `steps` = steps of the pipeline to run. Default to all.
 """
-function transcriptome_assembly(dir_path::AbstractString, organism::AbstractString, lineage_dataset::AbstractString, contaminations, prey::AbstractString, steps=String[])
+function transcriptome_assembly_db(dir_path::AbstractString, organism::AbstractString, lineage_dataset::AbstractString, contaminations, prey::AbstractString, steps=String[])
     if dir_path[end] != "/"
         dir_path *= "/"
     end
