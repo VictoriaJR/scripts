@@ -23,7 +23,6 @@ function transcriptome_assembly_db(dir_path::AbstractString, organism::AbstractS
     cutadapt_dir = dir_path * "cutadapt/"
     cutadapt_output_file = cutadapt_dir * organism * "_1.cutadapt.fastq"
     cutadapt_paired_output_file = cutadapt_dir * organism * "_2.cutadapt.fastq"
-    if check_cutadapt
         if !isdir(cutadapt_dir)
             mkdir(cutadapt_dir)
         end
