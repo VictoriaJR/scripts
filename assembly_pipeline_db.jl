@@ -52,7 +52,7 @@ function transcriptome_assembly_db(dir_path::AbstractString, organism::AbstractS
     ## 2. TRANSCRIPTOME ASSEMBLY
 
     # use FLASH to assemble
-        run(`/Data/victoria/software/FLASH2-2.2.00/flash2 flash
+        run(`/Data/victoria/software/FLASH2-2.2.00/flash2
             -d $dir_path
             -t 12
             $cutadapt_output_file
