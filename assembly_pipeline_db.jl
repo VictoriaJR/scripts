@@ -46,7 +46,6 @@ function transcriptome_assembly_db(dir_path::AbstractString, organism::AbstractS
             -o $cutadapt_output_file
             -p $cutadapt_paired_output_file
             $raw_seq_reads_1 $raw_seq_reads_2`)
-    end
 
 
 
