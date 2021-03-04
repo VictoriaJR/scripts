@@ -144,7 +144,6 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
             --pe1-1 $cutadapt_output_file
             --pe1-2 $cutadapt_paired_output_file
             --threads 24
-            --memory 100
             -o $rnaspades_dir`)
     end
     transcripts_file = rnaspades_dir * "soft_filtered_transcripts.fasta"
