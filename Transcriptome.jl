@@ -163,42 +163,42 @@ function single_line_fasta(file)
 end
 
 function combine_datasets(out_dir, in_dirs...; check_id = false)
-	check_id && _combine_datasets_check_id(out_dir, in_dirs...)
-	_combine_datasets_no_check_id(out_dir, in_dirs...)
+	check_id && return _combine_datasets_check_id(out_dir, in_dirs...)
+	return _combine_datasets_no_check_id(out_dir, in_dirs...)
 end
 
 function _combine_datasets_check_id(out_dir, in_dirs...)
-	dict_seq = Dict{String,Vector{Tuple{String,String}}}() # creates a dictionnary according to the relation: file => list of protein sequence
+       dict_id_seq = Dict{String,Vector{Tuple{String,String}}}() # creates a dictionnary according to the relation: file => list of protein sequence
 
-	for dir in in_dirs # loop through the directories given as arguments
-		for f in readdir(dir; join = false) # loop through each file within a directory
-			f_out = joinpath(out_dir, f * ".out")
-			close(open(f_out, "a")) # creates a new file if it does not already exist
-			push!(dict_seq, f_out => Tuple{String,String}[])
-		end
-	end
+       for dir in in_dirs # loop through the directories given as arguments
+	       for f in readdir(dir; join = false) # loop through each file within a directory
+		       f_out = joinpath(out_dir, f * ".out")
+		       close(open(f_out, "a")) # creates a new file if it does not already exist
+		       push!(dict_id_seq, f_out => Tuple{String,String}[])
+	       end
+       end
 
-	for dir in in_dirs # loop through the directories given as arguments
-		for f in readdir(dir; join = false) # loop through each file within a directory
-			lines = split(read(joinpath(dir, f), String), ">"; keepempty = false)
-			f_out = joinpath(out_dir, f * ".out")
-			open(f_out, "a") do io # append sequence name and sequence protein in the corresponding out file
-				for line in lines
-					parts = split(line, "\n"; limit = 2)
-					id = split(parts[1], " "; limit = 2)[1]
-					seq = parts[2]
-					seq_f_out = dict_seq[f_out]
-					if !((id, seq) in seq_f_out)
-						write(io, ">" * id * "\n") # write id of the sequence
-						write(io, seq) # write protein sequence
-						push!(seq_f_out, (id, seq)) # add the new protein sequence to the list corresponding to the in-file
-					end
-				end
-			end
-		end
-	end
+       for dir in in_dirs # loop through the directories given as arguments
+	       for f in readdir(dir; join = false) # loop through each file within a directory
+		       lines = split(read(joinpath(dir, f), String), ">"; keepempty = false)
+		       f_out = joinpath(out_dir, f * ".out")
+		       open(f_out, "a") do io # append sequence name and sequence protein in the corresponding out file
+			       for line in lines
+				       parts = split(line, "\n"; limit = 2)
+				       id = split(parts[1], " "; limit = 2)[1]
+				       seq = parts[2]
+				       id_seq_f_out = dict_id_seq[f_out]
+				       if !((id, seq) in id_seq_f_out)
+					       write(io, ">" * id * "\n") # write id of the sequence
+					       write(io, seq) # write protein sequence
+					       push!(id_seq_f_out, (id, seq)) # add the new protein sequence to the list corresponding to the in-file
+				       end
+			       end
+		       end
+	       end
+       end
 
-	return collect(keys(dict_seq)) # turns KeySet into Vector
+       return collect(keys(dict_id_seq)) # turns KeySet into Vector
 end
 
 function _combine_datasets_no_check_id(out_dir, in_dirs...)
