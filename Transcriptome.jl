@@ -12,6 +12,8 @@ include("assembly_pipeline_unpaired_jezero.jl")
     export transcriptome_assembly_unpaired_jezero
 include("assembly_pipeline_unpaired_jezero_oligoDT.jl")
     export transcriptome_assembly_unpaired_jezero_oligoDT
+include("assembly_pipeline_paired_jezero.jl")
+    export transcriptome_assembly_paired_jezero
 
 ## utils
 
