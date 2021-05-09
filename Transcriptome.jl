@@ -8,6 +8,10 @@ include("assembly_pipeline_db.jl")
     export transcriptome_assembly_db
 include("assembly_pipeline_paired_2_transcriptomes.jl")
     export transcriptome_assembly_paired_2_transcriptomes
+include("assembly_pipeline_unpaired_jezero.jl")
+    export transcriptome_assembly_unpaired_jezero
+include("assembly_pipeline_unpaired_jezero_oligoDT.jl")
+    export transcriptome_assembly_unpaired_jezero_oligoDT
 
 ## utils
 
