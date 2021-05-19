@@ -151,7 +151,6 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     if check_busco
         path_ = pwd()
         cd("/Data/victoria/db/")
-        run(`conda activate busco_v5`)
         run(`busco
             --in $transcripts_file
             --out $(organism * "_transcripts.fasta_BUSCO")
