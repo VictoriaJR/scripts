@@ -131,7 +131,6 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
     if check_busco
         path_ = pwd()
         cd("/Data/victoria/db/")
-        run(`conda activate busco_v5`)
         run(`busco
             --in $transcripts_file
             --out $(organism * "_transcripts.fasta_BUSCO")
