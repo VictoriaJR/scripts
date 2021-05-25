@@ -187,7 +187,7 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
     if check_bowtie2
         path_ = pwd()
         cd(rnaspades_dir)
-        run(`bowtie2-build $transcripts_file $bowtie2_prefix`)
+        run(`/opt/bowtie2-2.4.2/bowtie2-build $transcripts_file $bowtie2_prefix`)
         run(`bowtie2
             -x $bowtie2_prefix
             -U $cutadapt_output_file
@@ -205,7 +205,6 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
     if check_blobtools
         path_ = pwd()
         cd(contamination_dir)
-        run(`conda activate blobtools_V1`)
         run(`blobtools taxify
             -f $blastx_output_file
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
