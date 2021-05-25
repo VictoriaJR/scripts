@@ -280,13 +280,13 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
-        database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta"
-        for f in readdir("/Data/databases/uniprot_sprot_blast/"; join = false)
-            if startswith(f, "uniprot_sprot_")
-                database *= f
-                break
-            end
-        end
+        database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta.blastDB"
+#        for f in readdir("/Data/databases/uniprot_sprot_blast/"; join = false)
+#            if startswith(f, "uniprot_sprot_")
+#                database *= f
+#                break
+#            end
+#        end
         blastp_output = rnaspades_dir * organism * "_longest_orfs.blastout"
         run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastp
             -query $(clean_transcripts_file * ".transdecoder_dir/longest_orfs.pep")
