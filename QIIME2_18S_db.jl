@@ -131,7 +131,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
                 --p-match-adapter-wildcards \
                 --p-match-read-wildcards \
                 --o-trimmed-sequences demux_file_trim`)
-        if check_trim_data_2
+        elseif check_trim_data_2
                 run(`qiime cutadapt trim-single \
                 --i-demultiplexed-sequences demux_file \
                 --p-front primer_fwd \
@@ -150,7 +150,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --p-match-adapter-wildcards \
             --p-match-read-wildcards \
             --o-trimmed-sequences demux_file_trim`)
-        if check_trim_data_2
+        elseif check_trim_data_2
             run(`qiime cutadapt trim-paired \
             --i-demultiplexed-sequences demux_file \
             --p-front-f primer_fwd \
@@ -158,13 +158,13 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --p-match-adapter-wildcards \
             --p-match-read-wildcards \
             --o-trimmed-sequences demux_file_trim`)
+        end
+    run(`qiime demux summarize \
+    --i-data demux_file_trim \
+    --o-visualization $(joinpath(dir_path, "demux-trim.qzv"`)))
+    end
     else
         throw(DomainError)
-    end
-            run(`qiime demux summarize \
-            --i-data demux_file_trim \
-            --o-visualization $(joinpath(dir_path, "demux-trim.qzv"`)))
-        end
     end
 
 
@@ -194,7 +194,6 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
         run(`qiime metadata tabulate \
         --m-input-file stats-dada2-trimmed.qza \
         --o-visualization stats-dada2-trimmed.qzv`)
-
     end
 
 
