@@ -103,20 +103,20 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
         if sequencing_type == "single_end"
             run(`qiime tools import \
             --type 'SampleData[SequencesWithQuality]' \
-            --input-path manifest_file \
-            --output-path demux_file \
+            --input-path $manifest_file \
+            --output-path $demux_file \
             --input-format SingleEndFastqManifestPhred33V2`)
             run(`qiime demux summarize \
-            --i-data demux_file \
+            --i-data $demux_file \
             --o-visualization $(joinpath(dir_path, "single-end-demux.qzv"))`)
         elseif sequencing_type == "paired_end"
             run(`qiime tools import \
             --type 'SampleData[SequencesWithQuality]' \
-            --input-path manifest_file \
-            --output-path demux_file \
+            --input-path $manifest_file \
+            --output-path $demux_file \
             --input-format PairedEndFastqManifestPhred64V2`)
             run(`qiime demux summarize \
-            --i-data demux_file \
+            --i-data $demux_file \
             --o-visualization $(joinpath(dir_path, "paired-end-demux.qzv"))`)
         end
     end
@@ -128,38 +128,38 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
     if sequencing_type == "single_end"
         if check_trim_data_1
                 run(`qiime cutadapt trim-single \
-                --i-demultiplexed-sequences demux_file \
-                --p-front primer_fwd \
+                --i-demultiplexed-sequences $demux_file \
+                --p-front $primer_fwd \
                 --p-match-adapter-wildcards \
                 --p-match-read-wildcards \
-                --o-trimmed-sequences demux_file_trim`)
+                --o-trimmed-sequences $demux_file_trim`)
         elseif check_trim_data_2
                 run(`qiime cutadapt trim-single \
-                --i-demultiplexed-sequences demux_file \
-                --p-front primer_fwd \
-                --p-adapter primer_rev \
+                --i-demultiplexed-sequences $demux_file \
+                --p-front $primer_fwd \
+                --p-adapter $primer_rev \
                 --p-match-adapter-wildcards \
                 --p-match-read-wildcards \
-                --o-trimmed-sequences demux_file_trim`)
+                --o-trimmed-sequences $demux_file_trim`)
         else
             throw(DomainError)
         end
     elseif sequencing_type == "paired_end"
         if check_trim_data_1
             run(`qiime cutadapt trim-paired \
-            --i-demultiplexed-sequences demux_file \
-            --p-front-f primer_fwd \
+            --i-demultiplexed-sequences $demux_file \
+            --p-front-f $primer_fwd \
             --p-match-adapter-wildcards \
             --p-match-read-wildcards \
-            --o-trimmed-sequences demux_file_trim`)
+            --o-trimmed-sequences $demux_file_trim`)
         elseif check_trim_data_2
             run(`qiime cutadapt trim-paired \
-            --i-demultiplexed-sequences demux_file \
-            --p-front-f primer_fwd \
-            --p-adapter-r primer_rev \
+            --i-demultiplexed-sequences $demux_file \
+            --p-front-f $primer_fwd \
+            --p-adapter-r $primer_rev \
             --p-match-adapter-wildcards \
             --p-match-read-wildcards \
-            --o-trimmed-sequences demux_file_trim`)
+            --o-trimmed-sequences $demux_file_trim`)
         end
     else
         throw(DomainError)
@@ -174,8 +174,8 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
     demux_file_trim = demux_trim_joined
         if sequencing_type == "paired_end"
             run(`qiime vsearch join-pairs \
-            --i-demultiplexed-seqs demux_file \
-            --o-joined-sequences demux_trim_join`)
+            --i-demultiplexed-seqs $demux_file \
+            --o-joined-sequences $demux_trim_join`)
         end
     end
 
@@ -186,12 +186,12 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
  derep_seqs = joinpath(dir_path, "rep-seqs.qza")
     if check_derep_vsearch
         run(`qiime vsearch dereplicate-sequences \
-        --i-sequences demux_file_trim \
-        --o-dereplicated-table derep_table \
-        --o-dereplicated-sequences rep_seqs`)
+        --i-sequences $demux_file_trim \
+        --o-dereplicated-table $derep_table \
+        --o-dereplicated-sequences $rep_seqs`)
         run(`qiime metadata tabulate \
-        --m-input-file stats-dada2-trimmed.qza \
-        --o-visualization stats-dada2-trimmed.qzv`)
+        --m-input-file $derep_table \
+        --o-visualization $(joinpath(dir_path, "derep_table.qzv"))`)
     end
 
 
@@ -207,20 +207,22 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
 
     if check_denovo_clus_OTU97
         run(`qiime vsearch cluster-features-de-novo \
-        --i-table derep_table \
-        --i-sequences derep_seqs \
+        --i-table $derep_table \
+        --i-sequences $derep_seqs \
         --p-perc-identity 0.97 \
-        --o-clustered-table clus_table  \
-        --o-clustered-sequences clus_seqs \
+        --o-clustered-table $clus_table  \
+        --o-clustered-sequences $clus_seqs \
         --p-threads 20`)
         run(`qiime tools export \
-        --input-path clus_table \
-        --output-path exported-feature-table`)
-        run(`biom convert -i feature_table_biom -o feature_table_tsv --to-tsv`)
+        --input-path $clus_table \
+        --output-path $feature_table_out`)
+        cd(feature_table_out)
+        run(`biom convert -i $feature_table_biom -o $feature_table_tsv --to-tsv`)
         run(`qiime tools export \
-        --input-path clus_seqs \
-        --output-path clus_seqs_out`)
+        --input-path $clus_seqs \
+        --output-path $clus_seqs_out`)
         println(run(`grep ">" -c clus_seqs_fasta`)) # * "OTUs"
+        cd("../")
     end 
 
 
@@ -232,21 +234,21 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
     if check_taxonomy_OTU
         run(`qiime feature-classifier classify-consensus-blast \
-        --i-query clus_seqs \
-        --i-reference-reads silva_ref_seqs \
-        --i-reference-taxonomy silva_ref_tax \
-        --o-classification tax_OTU`)
+        --i-query $clus_seqs \
+        --i-reference-reads $silva_ref_seqs \
+        --i-reference-taxonomy $silva_ref_tax \
+        --o-classification $tax_OTU`)
         run(`qiime metadata tabulate \
-        --m-input-file tax_OTU \
+        --m-input-file $tax_OTU \
         --o-visualization $(joinpath(dir_path, "taxonomy.qzv"))`)
         run(`qiime taxa barplot \
-        --i-table clus_table \
-        --i-taxonomy tax_OTU \
-        --m-metadata-file manifest_file \
+        --i-table $clus_table \
+        --i-taxonomy $tax_OTU \
+        --m-metadata-file $manifest_file \
         --o-visualization $(joinpath(dir_path, "taxa-bar-plots.qzv"))`)
         run(`qiime tools export \
-        --input-path tax_OTU \
-        --output-path tax_OTU_out`) # file used for annotation of OTUs 
+        --input-path $tax_OTU \
+        --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         !if check_16S_taxonomy_filter
             replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt)
         end
@@ -262,25 +264,25 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     if check_16S_taxonomy_filter
         run(`qiime taxa filter-table \
-        --i-table clus_table \
-        --i-taxonomy tax_OTU \
+        --i-table $clus_table \
+        --i-taxonomy $tax_OTU \
         --p-exclude bacteria,archaea \
-        --o-filtered-table clean_table`)
+        --o-filtered-table $clean_table`)
         run(`qiime taxa filter-seqs \
-        --i-sequences clus_seqs \
-        --i-taxonomy tax_OTU \
+        --i-sequences $clus_seqs \
+        --i-taxonomy $tax_OTU \
         --p-include p__ \
         --p-exclude bacteria,archaea \
-        --o-filtered-sequences clean_seqs`)
+        --o-filtered-sequences $clean_seqs`)
         run(`qiime feature-classifier classify-consensus-blast \
-        --i-query clean_seqs \
-        --i-reference-reads silva_ref_seqs \
-        --i-reference-taxonomy silva_ref_tax \
-        --o-classification clean_tax_table`)
+        --i-query $clean_seqs \
+        --i-reference-reads $silva_ref_seqs \
+        --i-reference-taxonomy $silva_ref_tax \
+        --o-classification $clean_tax_table`)
         run(`qiime tools export \
-        --input-path clean_seqs \
-        --output-path clean_seqs_out`)
-        println(run(`grep ">" -c clean_seqs_fasta`))
+        --input-path $clean_seqs \
+        --output-path $clean_seqs_out`)
+        println(run(`grep ">" -c $clean_seqs_fasta`))
     end
 
 ## 9. Rename headers and count number of OTUs per SRA experiment
