@@ -161,8 +161,6 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --p-match-read-wildcards
             --o-trimmed-sequences $demux_file_trim`)
         end
-    else
-        throw(DomainError)
     end
 
 
