@@ -97,7 +97,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
 
  ## 2. Import data
 
-    manifest_file = joinpath(dir_path, bio_project * "manifest.tsv")
+    manifest_file = joinpath(dir_path, bio_project * "_manifest.tsv")
     demux_file = joinpath(dir_path, "demux.qza")
     if check_import_data
         if sequencing_type == "single_end"
