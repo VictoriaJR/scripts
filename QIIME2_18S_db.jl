@@ -122,37 +122,37 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
     end
 
 
-## 3. Remove primer *fix primer variables*
+## 3. Remove primer
 
     demux_file_trim = joinpath(dir_path, "demux_trim.qza")
-    if sequencing_type == "single_end"
-        if check_trim_data_1
+    if check_trim_data_1
+        if sequencing_type == "single_end"
                 run(`qiime cutadapt trim-single
                 --i-demultiplexed-sequences $demux_file
                 --p-front $primer_fwd
                 --p-match-adapter-wildcards
                 --p-match-read-wildcards
                 --o-trimmed-sequences $demux_file_trim`)
-        elseif check_trim_data_2
-                run(`qiime cutadapt trim-single
-                --i-demultiplexed-sequences $demux_file
-                --p-front $primer_fwd
-                --p-adapter $primer_rev
-                --p-match-adapter-wildcards
-                --p-match-read-wildcards
-                --o-trimmed-sequences $demux_file_trim`)
-        else
-            throw(DomainError)
-        end
-    elseif sequencing_type == "paired_end"
-        if check_trim_data_1
+        elseif sequencing_type == "paired_end"
             run(`qiime cutadapt trim-paired
             --i-demultiplexed-sequences $demux_file
             --p-front-f $primer_fwd
             --p-match-adapter-wildcards
             --p-match-read-wildcards
             --o-trimmed-sequences $demux_file_trim`)
-        elseif check_trim_data_2
+        else
+            throw(DomainError)
+        end
+    elseif check_trim_data_2
+        if sequencing_type == "single_end"
+            run(`qiime cutadapt trim-single
+            --i-demultiplexed-sequences $demux_file
+            --p-front $primer_fwd
+            --p-adapter $primer_rev
+            --p-match-adapter-wildcards
+            --p-match-read-wildcards
+            --o-trimmed-sequences $demux_file_trim`)
+        elseif sequencing_type == "paired_end"
             run(`qiime cutadapt trim-paired
             --i-demultiplexed-sequences $demux_file
             --p-front-f $primer_fwd
