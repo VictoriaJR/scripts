@@ -223,8 +223,8 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
 
 
 ## 7. Annotate OTUs 
-    silva_ref_seqs = joinpath(dir_path, * "../ref_db/" * "silva-138-99-seqs.qza")
-    silva_ref_tax = joinpath(dir_path, * "../ref_db/" * "silva-138-99-tax.qza")
+    silva_ref_seqs = joinpath(dir_path, "../ref_db/silva-138-99-seqs.qza")
+    silva_ref_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
     tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
