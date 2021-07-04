@@ -291,6 +291,8 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     end
 
 
+end #end function
+
  
         
     
