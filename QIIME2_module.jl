@@ -48,6 +48,7 @@ function OTUs_per_SRA_experiment(feature_table)
         end
         results[i-1] = sample[i-1] => x
     end       
+end
 
 
-
+end # end module
