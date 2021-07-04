@@ -245,7 +245,7 @@ clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
         run(`qiime tools export \
         --input-path tax_OTU \
         --output-path tax_OTU_out`) # file used for annotation of OTUs 
-        if check_16S_taxonomy_filter = false
+        !if check_16S_taxonomy_filter
             replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt)
         end
     end
