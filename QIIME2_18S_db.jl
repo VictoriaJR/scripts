@@ -106,7 +106,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --input-format SingleEndFastqManifestPhred33V2`)
             run(`qiime demux summarize \
             --i-data demux_file \
-            --o-visualization $(joinpath(dir_path, "single-end-demux.qzv"`)))
+            --o-visualization $(joinpath(dir_path, "single-end-demux.qzv"))`)
         elseif sequencing_type == "paired_end"
             run(`qiime tools import \
             --type 'SampleData[SequencesWithQuality]' \
@@ -115,7 +115,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --input-format PairedEndFastqManifestPhred64V2`)
             run(`qiime demux summarize \
             --i-data demux_file \
-            --o-visualization $(joinpath(dir_path, "paired-end-demux.qzv"`)))
+            --o-visualization $(joinpath(dir_path, "paired-end-demux.qzv"))`)
         end
     end
 
@@ -161,7 +161,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
         end
     run(`qiime demux summarize \
     --i-data demux_file_trim \
-    --o-visualization $(joinpath(dir_path, "demux-trim.qzv"`)))
+    --o-visualization $(joinpath(dir_path, "demux-trim.qzv"))`)
     end
     else
         throw(DomainError)
