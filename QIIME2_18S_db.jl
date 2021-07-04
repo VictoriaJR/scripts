@@ -171,7 +171,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
 
     if check_join_reads
     demux_trim_join = joinpath(dir_path, "demux-joined.qza")
-    demux_file_trim = demux_trim_joined
+    demux_file_trim = demux_trim_join
         if sequencing_type == "paired_end"
             run(`qiime vsearch join-pairs
             --i-demultiplexed-seqs $demux_file
