@@ -1,13 +1,9 @@
-"""
-qiime2 module - processing SRA samples for environmental 18S database
-"""
 module QIIME2_pipeline
 using CSV
 using DataFrames
 
 include("QIIME2_18S_db.jl")
     export QIIME2_18S_db
-
 
 # utils 
 
