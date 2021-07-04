@@ -81,7 +81,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
         if !isdir(fastq_dir)
             mkdir(fastq_dir)
         end
-        cd(fastq_dir)
+        run(`cd fastq_dir`)
         if sequencing_type == "single_end"
             for line in eachline(sra_acc_file)
                 run(`/opt/sratoolkit.2.10.9-ubuntu64/bin/fastq-dump $line --gzip`)
@@ -90,8 +90,8 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             for line in eachline(sra_acc_file)
                 run(`/opt/sratoolkit.2.10.9-ubuntu64/bin/fastq-dump $line --split-files --gzip`)
             end
-        cd("../")
         end
+        run(`cd ../`)
     end    
         
 
