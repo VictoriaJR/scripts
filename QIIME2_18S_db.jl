@@ -188,7 +188,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
         run(`qiime vsearch dereplicate-sequences
         --i-sequences $demux_file_trim
         --o-dereplicated-table $derep_table
-        --o-dereplicated-sequences $rep_seqs`)
+        --o-dereplicated-sequences $derep_seqs`)
         run(`qiime metadata tabulate
         --m-input-file $derep_table
         --o-visualization $(joinpath(dir_path, "derep_table.qzv"))`)
