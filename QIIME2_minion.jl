@@ -1,5 +1,5 @@
 """
-    QIIME2_minion(dir_path, sequencing_technology, sequencing_type, primers, steps)
+    QIIME2_minion(dir_path, experiment_name, primers, steps)
 Execute the qiime2 pipeline consisting of the steps: "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
 Inputs:
 `dir_path` = path to folder containing manifest file and sra_acc.txt file)
@@ -73,7 +73,6 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
     manifest_file = joinpath(dir_path, experiment_name * "_manifest.tsv")
     demux_file = joinpath(dir_path, "demux.qza")
     if check_import_data
-        if sequencing_type == "single_end"
             run(`qiime tools import
             --type 'SampleData[SequencesWithQuality]'
             --input-path $manifest_file
