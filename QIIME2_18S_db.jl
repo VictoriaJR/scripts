@@ -260,6 +260,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     clean_seqs = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea.qza")
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
     clean_tax_table_out = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea/")
+    clean_tax_table_tsv = clean_tax_table_out * "taxonomy.tsv"
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     if check_16S_taxonomy_filter
@@ -295,7 +296,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 ## 9. Rename headers and count number of OTUs per SRA experiment
 
     if check_rename_OTU_tax_bioproj
-        replace_OTU_header_taxonomy(clean_seqs_fasta, clean_tax_table_out, bio_project)
+        replace_OTU_header_taxonomy(clean_seqs_fasta, clean_tax_table_tsv, bio_project)
         OTUs_per_SRA_experiment(clean_table_out_tsv)
     else
         return throw(ArgumentError(string("Rename and count OTU error")))
