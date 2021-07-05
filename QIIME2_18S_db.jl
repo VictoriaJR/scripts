@@ -201,7 +201,7 @@ feature_table_out = joinpath(dir_path, "exported-feature-table/")
 feature_table_biom = feature_table_out * "feature-table.biom"
 feature_table_tsv = feature_table_out * "feature-table.tsv"
 clus_seqs_out = joinpath(dir_path, "rep-seqs-dn-97/")
-clus_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
+clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
     if check_denovo_clus_OTU97
         run(`qiime vsearch cluster-features-de-novo
