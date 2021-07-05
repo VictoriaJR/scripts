@@ -1,6 +1,6 @@
 """
     QIIME2_minion(dir_path, sequencing_technology, sequencing_type, primers, steps)
-Execute the qiime2 pipeline consisting of the steps: "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax_bioproj" "phylogenetic_tree"
+Execute the qiime2 pipeline consisting of the steps: "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
 Inputs:
 `dir_path` = path to folder containing manifest file and sra_acc.txt file)
 `experiment_name` = e.g. David_may20_soil
@@ -25,7 +25,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
     check_denovo_clus_OTU97 = false
     check_taxonomy_OTU = false
     check_16S_taxonomy_filter = false
-    check_rename_OTU_tax_bioproj = false
+    check_rename_OTU_tax = false
     check_phylogenetic_tree = false
 
 
@@ -38,7 +38,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
         check_denovo_clus_OTU97 = true
         check_taxonomy_OTU = true
         check_16S_taxonomy_filter = true
-        check_rename_OTU_tax_bioproj = true
+        check_rename_OTU_tax = true
         check_phylogenetic_tree = true
 
     else
@@ -55,8 +55,8 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
                 check_taxonomy_OTU = true
             elseif step == "16S_taxonomy_filter"
                 check_16S_taxonomy_filter = true
-            elseif step == "rename_OTU_tax_bioproj"
-                check_rename_OTU_tax_bioproj = true
+            elseif step == "rename_OTU_tax"
+                check_rename_OTU_tax = true
             elseif step == "phylogenetic_tree"
                 check_phylogenetic_tree = true
             else
@@ -206,7 +206,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
 ## 9. Rename headers 
 
-    if check_rename_OTU_tax_bioproj
+    if check_rename_OTU_tax
         final_fasta = joinpath(clean_seqs_out, ".taxonomy")
         replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_txt, experiment_name)
     else
