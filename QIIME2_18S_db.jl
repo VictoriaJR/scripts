@@ -231,22 +231,22 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
     tax_OTU_tsv = tax_OTU_out * "taxonomy.tsv"
     if check_taxonomy_OTU
-        # run(`qiime feature-classifier classify-consensus-blast
-        # --i-query $clus_seqs
-        # --i-reference-reads $silva_ref_seqs
-        # --i-reference-taxonomy $silva_ref_tax
-        # --o-classification $tax_OTU`)
-        # run(`qiime metadata tabulate
-        # --m-input-file $tax_OTU
-        # --o-visualization $(joinpath(dir_path, "taxonomy.qzv"))`)
-        # run(`qiime taxa barplot
-        # --i-table $clus_table
-        # --i-taxonomy $tax_OTU
-        # --m-metadata-file $manifest_file
-        # --o-visualization $(joinpath(dir_path, "taxa-bar-plots.qzv"))`)
-        # run(`qiime tools export
-        # --input-path $tax_OTU
-        # --output-path $tax_OTU_out`) # file used for annotation of OTUs 
+        run(`qiime feature-classifier classify-consensus-blast
+        --i-query $clus_seqs
+        --i-reference-reads $silva_ref_seqs
+        --i-reference-taxonomy $silva_ref_tax
+        --o-classification $tax_OTU`)
+        run(`qiime metadata tabulate
+        --m-input-file $tax_OTU
+        --o-visualization $(joinpath(dir_path, "taxonomy.qzv"))`)
+        run(`qiime taxa barplot
+        --i-table $clus_table
+        --i-taxonomy $tax_OTU
+        --m-metadata-file $manifest_file
+        --o-visualization $(joinpath(dir_path, "taxa-bar-plots.qzv"))`)
+        run(`qiime tools export
+        --input-path $tax_OTU
+        --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         replace_OTU_header_taxonomy(clus_seqs_fasta, tax_OTU_tsv, bio_project)
     end
 
@@ -254,38 +254,49 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     
 ## 8. filter 16S data 
     clean_table = joinpath(dir_path, "table-no-bacteria-no-archaea.qza")
+    clean_table_out = joinpath(dir_path, "table-no-bacteria-no-archaea/")
+    clean_table_out_biom = clean_table_out * "feature-table.biom"
+    clean_table_out_tsv = clean_table_out * "feature-table.tsv"
     clean_seqs = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea.qza")
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
+    clean_tax_table_out = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea")
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     if check_16S_taxonomy_filter
-        run(`qiime taxa filter-table
-        --i-table $clus_table
-        --i-taxonomy $tax_OTU
-        --p-exclude bacteria,archaea
-        --o-filtered-table $clean_table`)
-        run(`qiime taxa filter-seqs
-        --i-sequences $clus_seqs
-        --i-taxonomy $tax_OTU
-        --p-include p__
-        --p-exclude bacteria,archaea
-        --o-filtered-sequences $clean_seqs`)
-        run(`qiime feature-classifier classify-consensus-blast
-        --i-query $clean_seqs
-        --i-reference-reads $silva_ref_seqs
-        --i-reference-taxonomy $silva_ref_tax
-        --o-classification $clean_tax_table`)
+        # run(`qiime taxa filter-table
+        # --i-table $clus_table
+        # --i-taxonomy $tax_OTU
+        # --p-exclude bacteria,archaea
+        # --o-filtered-table $clean_table`)
+        # run(`qiime taxa filter-seqs
+        # --i-sequences $clus_seqs
+        # --i-taxonomy $tax_OTU
+        # --p-include p__
+        # --p-exclude bacteria,archaea
+        # --o-filtered-sequences $clean_seqs`)
+        # run(`qiime feature-classifier classify-consensus-blast
+        # --i-query $clean_seqs
+        # --i-reference-reads $silva_ref_seqs
+        # --i-reference-taxonomy $silva_ref_tax
+        # --o-classification $clean_tax_table`)
+        run(`qiime tools export
+        --input-path $clean_tax_table
+        --output-path $clean_tax_table_out`)
         run(`qiime tools export
         --input-path $clean_seqs
         --output-path $clean_seqs_out`)
         println(run(`grep ">" -c $clean_seqs_fasta`))
+        run(`qiime tools export
+        --input-path $clean_table
+        --output-path $clean_table_out`)
+        run(`biom convert -i $clean_table_out_biom -o $clean_table_out_tsv --to-tsv`)
     end
 
 ## 9. Rename headers and count number of OTUs per SRA experiment
 
     if check_rename_OTU_tax_bioproj
-        replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_tsv, bio_project)
-        OTUs_per_SRA_experiment(clean_tax_table) 
+        replace_OTU_header_taxonomy(clean_seqs_fasta, clean_tax_table_out, bio_project)
+        OTUs_per_SRA_experiment(clean_table_out_tsv) 
     else
         return throw(ArgumentError(string("Rename and count OTU error")))
     end
