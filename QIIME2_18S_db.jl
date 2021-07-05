@@ -259,7 +259,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     clean_table_out_tsv = clean_table_out * "feature-table.tsv"
     clean_seqs = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea.qza")
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
-    clean_tax_table_out = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea")
+    clean_tax_table_out = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea/")
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     if check_16S_taxonomy_filter
