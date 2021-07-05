@@ -229,26 +229,26 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     silva_ref_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
-    tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
+    tax_OTU_tsv = tax_OTU_out * "taxonomy.tsv"
     if check_taxonomy_OTU
-        run(`qiime feature-classifier classify-consensus-blast
-        --i-query $clus_seqs
-        --i-reference-reads $silva_ref_seqs
-        --i-reference-taxonomy $silva_ref_tax
-        --o-classification $tax_OTU`)
-        run(`qiime metadata tabulate
-        --m-input-file $tax_OTU
-        --o-visualization $(joinpath(dir_path, "taxonomy.qzv"))`)
-        run(`qiime taxa barplot
-        --i-table $clus_table
-        --i-taxonomy $tax_OTU
-        --m-metadata-file $manifest_file
-        --o-visualization $(joinpath(dir_path, "taxa-bar-plots.qzv"))`)
-        run(`qiime tools export
-        --input-path $tax_OTU
-        --output-path $tax_OTU_out`) # file used for annotation of OTUs 
+        # run(`qiime feature-classifier classify-consensus-blast
+        # --i-query $clus_seqs
+        # --i-reference-reads $silva_ref_seqs
+        # --i-reference-taxonomy $silva_ref_tax
+        # --o-classification $tax_OTU`)
+        # run(`qiime metadata tabulate
+        # --m-input-file $tax_OTU
+        # --o-visualization $(joinpath(dir_path, "taxonomy.qzv"))`)
+        # run(`qiime taxa barplot
+        # --i-table $clus_table
+        # --i-taxonomy $tax_OTU
+        # --m-metadata-file $manifest_file
+        # --o-visualization $(joinpath(dir_path, "taxa-bar-plots.qzv"))`)
+        # run(`qiime tools export
+        # --input-path $tax_OTU
+        # --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         !if check_16S_taxonomy_filter
-            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt, bio_project)
+            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_tsv, bio_project)
         end
     end
 
@@ -286,7 +286,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 ## 9. Rename headers and count number of OTUs per SRA experiment
 
     if check_rename_OTU_tax_bioproj
-        replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_txt, bio_project)
+        replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_tsv, bio_project)
         OTUs_per_SRA_experiment(clean_tax_table) 
     else
         return throw(ArgumentError(string("Rename and count OTU error")))
