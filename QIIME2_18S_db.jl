@@ -219,7 +219,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
         run(`qiime tools export
         --input-path $clus_seqs
         --output-path $clus_seqs_out`)
-        println(run(`grep ">" -c clus_seqs_fasta`)) # * "OTUs"
+        println(run(`grep ">" -c $clus_seqs_fasta`)) # * "OTUs"
         cd("../")
     end 
 
