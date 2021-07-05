@@ -264,22 +264,21 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
     if check_16S_taxonomy_filter
-        # run(`qiime taxa filter-table
-        # --i-table $clus_table
-        # --i-taxonomy $tax_OTU
-        # --p-exclude bacteria,archaea
-        # --o-filtered-table $clean_table`)
-        # run(`qiime taxa filter-seqs
-        # --i-sequences $clus_seqs
-        # --i-taxonomy $tax_OTU
-        # --p-include p__
-        # --p-exclude bacteria,archaea
-        # --o-filtered-sequences $clean_seqs`)
-        # run(`qiime feature-classifier classify-consensus-blast
-        # --i-query $clean_seqs
-        # --i-reference-reads $silva_ref_seqs
-        # --i-reference-taxonomy $silva_ref_tax
-        # --o-classification $clean_tax_table`)
+        run(`qiime taxa filter-table
+        --i-table $clus_table
+        --i-taxonomy $tax_OTU
+        --p-exclude bacteria,archaea
+        --o-filtered-table $clean_table`)
+        run(`qiime taxa filter-seqs
+        --i-sequences $clus_seqs
+        --i-taxonomy $tax_OTU
+        --p-exclude bacteria,archaea
+        --o-filtered-sequences $clean_seqs`)
+        run(`qiime feature-classifier classify-consensus-blast
+        --i-query $clean_seqs
+        --i-reference-reads $silva_ref_seqs
+        --i-reference-taxonomy $silva_ref_tax
+        --o-classification $clean_tax_table`)
         run(`qiime tools export
         --input-path $clean_tax_table
         --output-path $clean_tax_table_out`)
