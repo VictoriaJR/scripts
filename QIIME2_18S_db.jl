@@ -248,7 +248,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
         --input-path $tax_OTU
         --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         !if check_16S_taxonomy_filter
-            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt)
+            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt, bio_project)
         end
     end
 
