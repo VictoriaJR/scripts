@@ -295,7 +295,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 ## 9. Rename headers and count number of OTUs per SRA experiment
 
     if check_rename_OTU_tax_bioproj
-        replace_OTU_header_taxonomy(clean_seqs_fasta, clean_tax_table_out, bio_project)
+        replace_OTU_header_taxonomy(clean_seqs_fasta, clean_table_out_tsv, bio_project)
         OTUs_per_SRA_experiment(clean_table_out_tsv) 
     else
         return throw(ArgumentError(string("Rename and count OTU error")))
