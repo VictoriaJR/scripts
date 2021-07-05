@@ -201,7 +201,7 @@ feature_table_out = joinpath(dir_path, "exported-feature-table/")
 feature_table_biom = feature_table_out * "feature-table.biom"
 feature_table_tsv = feature_table_out * "feature-table.tsv"
 clus_seqs_out = joinpath(dir_path, "rep-seqs-dn-97/")
-clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
+@show clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
     if check_denovo_clus_OTU97
         run(`qiime vsearch cluster-features-de-novo
@@ -229,7 +229,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
     silva_ref_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
-    tax_OTU_tsv = tax_OTU_out * "taxonomy.tsv"
+    @show tax_OTU_tsv = tax_OTU_out * "taxonomy.tsv"
     if check_taxonomy_OTU
         # run(`qiime feature-classifier classify-consensus-blast
         # --i-query $clus_seqs
