@@ -85,7 +85,7 @@ function file_rename_headers(file, organism)
 	open(renamed, "w") do f
 		for (i, line) in enumerate(lines)
 			seq = replace(split(line, "\n"; limit = 2)[2], "*" => "")
-			write(f, ">" * organism * "_" * string(i) * "\n" * seq)
+			write(f, ">" * organism * "@" * string(i) * "\n" * seq)
 		end
 	end
 	return renamed
