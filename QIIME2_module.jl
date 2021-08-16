@@ -5,6 +5,9 @@ using DataFrames
 include("QIIME2_18S_db.jl")
     export QIIME2_18S_db
 
+include("QIIME2_16S.jl")
+    export QIIME2_16S
+
 # utils 
 
 # replace OTU headers with taxonomic annotation
