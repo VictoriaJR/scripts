@@ -60,7 +60,7 @@ function QIIME2_16S(dir_path::AbstractString, bio_project::AbstractString, seque
                 check_denovo_clus_OTU97 = true
             elseif step == "taxonomy_OTU"
                 check_taxonomy_OTU = true
-            elseif step == "16S_taxonomy_filter"
+            elseif step == "mito_chloro_filter"
                 check_mito_chloro_filter = true
             elseif step == "rename_OTU_tax_bioproj"
                 check_rename_OTU_tax_bioproj = true
