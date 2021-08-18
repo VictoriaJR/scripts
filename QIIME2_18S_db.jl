@@ -111,7 +111,7 @@ function QIIME2_18S_db(dir_path::AbstractString, bio_project::AbstractString, se
             --o-visualization $(joinpath(dir_path, "single-end-demux.qzv"))`)
         elseif sequencing_type == "paired_end"
             run(`qiime tools import
-            --type 'SampleData[SequencesWithQuality]'
+            --type 'SampleData[PairedEndSequencesWithQuality]'
             --input-path $manifest_file
             --output-path $demux_file
             --input-format PairedEndFastqManifestPhred64V2`)
