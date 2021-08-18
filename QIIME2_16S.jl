@@ -114,7 +114,7 @@ function QIIME2_16S(dir_path::AbstractString, bio_project::AbstractString, seque
             --type 'SampleData[PairedEndSequencesWithQuality]'
             --input-path $manifest_file
             --output-path $demux_file
-            --input-format PairedEndFastqManifestPhred64V2`)
+            --input-format PairedEndFastqManifestPhred33V2`)
             run(`qiime demux summarize
             --i-data $demux_file
             --o-visualization $(joinpath(dir_path, "paired-end-demux.qzv"))`)
