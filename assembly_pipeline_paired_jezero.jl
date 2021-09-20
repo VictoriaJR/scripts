@@ -194,7 +194,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastx
             -query $transcripts_file
             -max_target_seqs 1
-            -sensitive
+          #  -sensitive
             -threads 24
             -db /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.diamond.dmnd
             -evalue 1e-25
