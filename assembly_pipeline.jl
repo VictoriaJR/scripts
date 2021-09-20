@@ -196,7 +196,7 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
         run(`blastx
             -query $transcripts_file
             -max_target_seqs 1
-            -threads 24
+            -num_threads 24
             -db /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.diamond.dmnd
             -evalue 1e-25
             -outfmt 6
