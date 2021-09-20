@@ -192,14 +192,14 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     blastx_output_file = contamination_dir * "transcripts.fasta.vs.uniprot_ref.mts1.1e25.out"
     if check_diamond_blastx
         run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastx
-            --query $transcripts_file
-            --max-target-seqs 1
-            --sensitive
-            --threads 24
-            --db /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.diamond.dmnd
-            --evalue 1e-25
-            --outfmt 6
-            --out $blastx_output_file`)
+            -query $transcripts_file
+            -max-target-seqs 1
+            -sensitive
+            -threads 24
+            -db /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.diamond.dmnd
+            -evalue 1e-25
+            -outfmt 6
+            -out $blastx_output_file`)
     end
 
     # use BOWTIE2
