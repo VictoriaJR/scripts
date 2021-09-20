@@ -193,15 +193,14 @@ function transcriptome_assembly(dir_path::AbstractString, organism::AbstractStri
 
     blastx_output_file = contamination_dir * "transcripts.fasta.vs.uniprot_ref.mts1.1e25.out"
     if check_diamond_blastx
-        run(`/home/glax/miniconda3/bin/diamond blastx
-            --query $transcripts_file
-            --max-target-seqs 1
-            --sensitive
-            --threads 24
-            --db /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.diamond.dmnd
-            --evalue 1e-25
-            --outfmt 6
-            --out $blastx_output_file`)
+        run(`blastx
+            -query $transcripts_file
+            -max_target_seqs 1
+            -threads 24
+            -db /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.diamond.dmnd
+            -evalue 1e-25
+            -outfmt 6
+            -out $blastx_output_file`)
     end
 
     # use BOWTIE2
