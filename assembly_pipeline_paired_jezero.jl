@@ -227,7 +227,6 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     if check_blobtools
         path_ = pwd()
         cd(contamination_dir)
-        run(`conda activate blobtools_V1`)
         run(`blobtools taxify
             -f $blastx_output_file
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
