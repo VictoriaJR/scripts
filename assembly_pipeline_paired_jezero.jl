@@ -224,7 +224,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     blobtools_prefix = organism * "_rnaspades"
     output_bam = contamination_dir * blobtools_prefix * ".bam"
     output_sorted_bam = contamination_dir * blobtools_prefix * ".sorted.bam"
-    blobtools_map2cov_output_file = contamination_dir * blobtools_prefix * ".sam.cov"
+    blobtools_map2cov_output_file = contamination_dir * blobtools_prefix * "sorted.bam.cov"
     blobtools_create_output_file = contamination_dir * blobtools_prefix * ".blobDB.json"
     if check_blobtools
         path_ = pwd()
