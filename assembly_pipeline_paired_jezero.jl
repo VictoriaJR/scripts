@@ -237,7 +237,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
             -s 0
             -t 2`)
-        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam -c -o $blobtools_map2cov_output_file`)
+        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
         run(`blobtools create
             -i $transcripts_file
             -t $blastn_output_file
