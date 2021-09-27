@@ -309,7 +309,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
-        database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta"
+        database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta.blastDB"
         for f in readdir("/Data/databases/uniprot_sprot_blast/"; join = false)
             if startswith(f, "uniprot_sprot_")
                 database *= f
