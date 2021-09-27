@@ -222,17 +222,21 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
 
     blobtools_taxify_output_file = contamination_dir * "transcripts.fasta.vs.uniprot_ref.mts1.1e25.taxified.out"
     blobtools_prefix = organism * "_rnaspades"
+    output_bam = contamination_dir * blobtools_prefix * ".bam"
+    output_sorted_bam = contamination_dir * blobtools_prefix * ".sorted.bam"
     blobtools_map2cov_output_file = contamination_dir * blobtools_prefix * ".sam.cov"
     blobtools_create_output_file = contamination_dir * blobtools_prefix * ".blobDB.json"
     if check_blobtools
         path_ = pwd()
         cd(contamination_dir)
+        run(`samtools view -@ 6 -bS -o $output_bam $bowtie2_output_file`)
+        run(`samtools sort -@ 6 -o $output_sorted_bam $output_bam`)
         run(`blobtools taxify
             -f $blastx_output_file
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
             -s 0
             -t 2`)
-        run(`blobtools map2cov -i $transcripts_file -b $bowtie2_output_file`)
+        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
         run(`blobtools create
             -i $transcripts_file
             -t $blastn_output_file
