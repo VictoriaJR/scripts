@@ -244,13 +244,13 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             -t $blobtools_taxify_output_file
             -c $blobtools_map2cov_output_file
             -o $blobtools_prefix`)
-        run(`blobtools blobplot
+        run(`blobtools plot
             --infile $blobtools_create_output_file
             --rank family`)
-        run(`blobtools blobplot
+        run(`blobtools plot
             --infile $blobtools_create_output_file
             --rank phylum`)
-        run(`blobtools blobplot
+        run(`blobtools plot
             --infile $blobtools_create_output_file
             --rank superkingdom`)
         run(`blobtools view
