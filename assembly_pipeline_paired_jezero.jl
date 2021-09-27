@@ -229,7 +229,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     if check_blobtools
         path_ = pwd()
         cd(contamination_dir)
-        run(`samtools view -@ 6 -b -S $bowtie2_output_file > $output_bam`)
+        run(`samtools view -@ 6 -b -S $bowtie2_output_file -o $output_bam`)
         run(`samtools sort -@ 6 $output_bam -o $output_sorted_bam`)
         run(`samtools index $output_sorted_bam`)
         run(`blobtools taxify
