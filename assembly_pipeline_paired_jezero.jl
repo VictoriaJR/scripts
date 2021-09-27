@@ -224,7 +224,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     blobtools_prefix = organism * "_rnaspades"
     output_bam = contamination_dir * blobtools_prefix * ".bam"
     output_sorted_bam = contamination_dir * blobtools_prefix * ".sorted.bam"
-    blobtools_map2cov_output_file = contamination_dir * blobtools_prefix * "sorted.bam.cov"
+    blobtools_map2cov_output_file = contamination_dir * blobtools_prefix * ".sorted.bam.cov"
     blobtools_create_output_file = contamination_dir * blobtools_prefix * ".blobDB.json"
     if check_blobtools
         path_ = pwd()
@@ -236,7 +236,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
             -s 0
             -t 2`)
-        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
+        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam -o $blobtools_map2cov_output_file`)
         run(`blobtools create
             -i $transcripts_file
             -t $blastn_output_file
