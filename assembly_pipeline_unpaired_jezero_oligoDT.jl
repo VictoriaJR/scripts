@@ -97,6 +97,7 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
 
     cutadapt_dir = dir_path * "cutadapt/"
     cutadapt_output_file = cutadapt_dir * organism * ".cutadapt.fastq"
+    info_cutadapt_file = cutadapt_dir * organism * ".info.cutadapt"
     if check_cutadapt
         if !isdir(cutadapt_dir)
             mkdir(cutadapt_dir)
@@ -112,7 +113,7 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
             -b "G{10}N{90}"
             -b "T{10}N{90}"
             -n=3
-            jq '.read_counts.output' info.cutadapt.json
+            --info-file $info_cutadapt_file
             -o $cutadapt_output_file
             $raw_seq_reads`)
     end
