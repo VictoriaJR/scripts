@@ -103,7 +103,16 @@ function transcriptome_assembly_unpaired_jezero_oligoDT(dir_path::AbstractString
         end
         run(`cutadapt
             -b CCCATGTACTCTGCGTTGATACCACTGCTT
+            -b CCCATGTACTCT
+            -b GCGTTGATACCACTGCTT
             -b AAGCAGTGGTATCAACGCAGAGTACATGGG
+            -b AAGCAGTGGTAT
+            -b CAACGCAGAGTACATGGG
+            -b "A{10}N{90}"
+            -b "G{10}N{90}"
+            -b "T{10}N{90}"
+            -n=3
+            jq '.read_counts.output' info.cutadapt.json
             -o $cutadapt_output_file
             $raw_seq_reads`)
     end
