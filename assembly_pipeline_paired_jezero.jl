@@ -156,6 +156,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             --out $(organism * "_transcripts.fasta_BUSCO")
             --out_path $rnaspades_dir
             --lineage_dataset $lineage_dataset
+            -f
             --mode transcriptome`)
         cd(path_)
     end
