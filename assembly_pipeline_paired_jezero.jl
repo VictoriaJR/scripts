@@ -1,10 +1,10 @@
 """
     transcriptome_assembly_paired_jezero(dir_path, organism, lineage_dataset, prey, steps)
-Execute the transcriptome assembly pipeline consisting of the steps: "fastqc", "cutadapt", "rnaspades", "busco", "blastn_megablast", "diamond_blastx", "bowtie2", "blobtools", "contamination_removal", "prey_removal", "transdecoder".
+Execute the transcriptome assembly pipeline consisting of the steps: "fastqc", "cutadapt", "rnaspades", "busco", "blastn_megablast", "diamond_blastx", "bowtie2", "blobtools", "contamination_removal", "busco_clean", "prey_removal", "transdecoder".
 Inputs:
 - `dir_path` = dir_path of the two raw sequence reads files
 - `organism` = name of the organism under study. This will be used as a prefix throughout
-- `lineage_dataset` = e.g. /PATH/TO/DATABASE/eukaryota_odb10, /PATH/TO/DATABASE/alveolata_odb10
+- `lineage_dataset` = e.g. eukaryota_odb10, alveolata_odb10
 - `contaminations` = e.g. ["Chordata", "Bacteria",  "Arthropoda"]
 - `prey` = name of the prey, e.g. "Procryptobia" for Colp34, "Spumella" for Psammosa pacifica
 - `steps` = steps of the pipeline to run. Default to all.
@@ -25,6 +25,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     check_blobtools = false
     check_contamination_removal = false
     check_prey_removal = false
+    check_busco_clean = false
     check_transdecoder = false
 
     if isempty(steps)
@@ -38,6 +39,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         check_blobtools = true
         check_contamination_removal = true
         check_prey_removal = true
+        check_busco_clean = true
         check_transdecoder = true
     else
         for step in steps
@@ -68,6 +70,8 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
                     return throw(ArgumentError(string("Prey ", prey, " is not valid")))
                 end
                 check_prey_removal = true
+            elseif step == "busco_clean"
+                check_busco = true
             elseif step == "transdecoder"
                 check_transdecoder = true
             else
@@ -296,6 +300,20 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     end
 
 
+    # use BUSCO to estimate transcriptome coverage
+
+    if check_busco_clean
+        path_ = pwd()
+        cd("/Data/victoria/db/")
+        run(`busco
+            --in $clean_transcripts_file
+            --out $(organism * "_transcripts.fasta_clean_BUSCO")
+            --out_path $rnaspades_dir
+            --lineage_dataset $lineage_dataset
+            -f
+            --mode transcriptome`)
+        cd(path_)
+    end
 
 
 
