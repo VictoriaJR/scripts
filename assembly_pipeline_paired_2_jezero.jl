@@ -1,5 +1,5 @@
 """
-    transcriptome_assembly_2_paired_jezero(dir_path, organism, lineage_dataset, prey, steps)
+    transcriptome_assembly_paired_2_jezero(dir_path, organism, lineage_dataset, prey, steps)
 Execute the transcriptome assembly pipeline consisting of the steps: "fastqc", "cutadapt", "rnaspades", "busco", "blastn_megablast", "diamond_blastx", "bowtie2", "blobtools", "contamination_removal", "busco_clean", "prey_removal", "transdecoder".
 Inputs:
 - `dir_path` = dir_path of the two raw sequence reads files
@@ -9,7 +9,7 @@ Inputs:
 - `prey` = name of the prey, e.g. "Procryptobia" for Colp34, "Spumella" for Psammosa pacifica
 - `steps` = steps of the pipeline to run. Default to all.
 """
-function transcriptome_assembly_2_paired_jezero(dir_path::AbstractString, organism::AbstractString, lineage_dataset::AbstractString, contaminations, prey::AbstractString, steps=String[])
+function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organism::AbstractString, lineage_dataset::AbstractString, contaminations, prey::AbstractString, steps=String[])
     if dir_path[end] != "/"
         dir_path *= "/"
     end
