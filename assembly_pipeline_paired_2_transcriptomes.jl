@@ -98,10 +98,10 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
     # use CUTADAPT to remove adapters from paired-end reads
 
     cutadapt_dir = dir_path * "cutadapt/"
-    cutadapt_output_file1 = cutadapt_dir * organism * "_S8_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S8_R2_001.cutadapt.fastq"
-    cutadapt_output_file2 = cutadapt_dir * organism * "_S20_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S20_R2_001.cutadapt.fastq"
+    cutadapt_output_file1 = cutadapt_dir * organism * "_S9_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S9_R2_001.cutadapt.fastq"
+    cutadapt_output_file2 = cutadapt_dir * organism * "_S11_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S11_R2_001.cutadapt.fastq"
     if check_cutadapt
         if !isdir(cutadapt_dir)
             mkdir(cutadapt_dir)
@@ -123,12 +123,10 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
             -A TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
             -A CTGTCTCTTATACACATCTGACGCTGCCGACGA
             -A CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
-            -o $cutadapt_output_file
-            -p $cutadapt_paired_output_file
+            -o $cutadapt_output_file1
+            -p $cutadapt_paired_output_file1
             $raw_seq_reads_1 $raw_seq_reads_2`)
     end
-
-
 
 
 
