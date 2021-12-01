@@ -221,7 +221,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
         run(`bowtie2-build $transcripts_file $bowtie2_prefix`)
         run(`bowtie2
             -x $bowtie2_prefix
-            -U $cutadapt_output_file,$cutadapt_paired_output_file
+            -U $cutadapt_output_file1,$cutadapt_paired_output_file1,$cutadapt_output_file2,$cutadapt_paired_output_file2
             -S $bowtie2_output_file
             -p 24`)
         cd(path_)
