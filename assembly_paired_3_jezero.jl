@@ -338,7 +338,6 @@ function transcriptome_assembly_paired_3_jezero(dir_path::AbstractString, organi
             removed_contaminations *= "no_" * name * "_" # e.g. "no_Chordata_no_Bacteria_no_Arthropoda_"
         end
         prey_blastn_output_file = contamination_dir * organism * "_" * removed_contaminations * "vs_" * prey * ".blastnout"
-        @show prey_db
         run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastn
             -task megablast
             -query $clean_transcripts_file
