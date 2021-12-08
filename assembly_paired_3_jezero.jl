@@ -65,7 +65,7 @@ function transcriptome_assembly_paired_3_jezero(dir_path::AbstractString, organi
                 if prey == "Procryptobia"
                     prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB"
                 elseif prey == "Spumella"
-                    prey_db = "/Data/victoria/transcriptomes/Spumella_elongata_MMETSP1098/Spumella_elongata_CCAP955_1_MMETSP1098_cds.fa"
+                    prey_db = "/Data/victoria/transcriptomes/Spumella_elongata_MMETSP1098/Spumella_elongata_CCAP955_1_MMETSP1098_cds.fa.db"
                     @show prey_db
                 else
                     return throw(ArgumentError(string("Prey ", prey, " is not valid")))
