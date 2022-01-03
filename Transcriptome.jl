@@ -16,8 +16,8 @@ include("assembly_pipeline_paired_jezero.jl")
     export transcriptome_assembly_paired_jezero
 include("assembly_pipeline_paired_2_jezero.jl")
     export transcriptome_assembly_paired_2_jezero
-include("assembly_paired_3_jezero.jl")
-    export transcriptome_assembly_paired_3_jezero
+include("assembly_paired_4_jezero.jl")
+    export transcriptome_assembly_paired_4_jezero
 ## utils
 
 """
