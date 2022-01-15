@@ -89,8 +89,8 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     # use FASTQC for quality analysis
 
     fastqc_dir = dir_path * "fastqc_raw_reads/"
-    raw_seq_reads_1 = dir_path * organism * "_R1_001.fastq.gz"
-    raw_seq_reads_2 = dir_path * organism * "_R2_001.fastq.gz"
+    raw_seq_reads_1 = dir_path * organism * "_R1_001.fastq"
+    raw_seq_reads_2 = dir_path * organism * "_R2_001.fastq"
     if check_fastqc
         if !isdir(fastqc_dir)
             mkdir(fastqc_dir)
@@ -146,6 +146,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             --pe1-1 $cutadapt_output_file
             --pe1-2 $cutadapt_paired_output_file
             --threads 24
+            -m 180
             -o $rnaspades_dir`)
     end
     transcripts_file = rnaspades_dir * "soft_filtered_transcripts.fasta"
