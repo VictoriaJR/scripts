@@ -89,8 +89,8 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
     # use FASTQC for quality analysis
 
     fastqc_dir = dir_path * "fastqc_raw_reads/"
-    raw_seq_reads_1 = dir_path * organism * "_R1_001.fastq"
-    raw_seq_reads_2 = dir_path * organism * "_R2_001.fastq"
+    raw_seq_reads_1 = dir_path * organism * "_R1_001.fastq.gz"
+    raw_seq_reads_2 = dir_path * organism * "_R2_001.fastq.gz"
     if check_fastqc
         if !isdir(fastqc_dir)
             mkdir(fastqc_dir)
