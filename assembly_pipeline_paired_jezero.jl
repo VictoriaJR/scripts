@@ -63,7 +63,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
                 check_contamination_removal = true
             elseif step == "prey_removal"
                 if prey == "Procryptobia"
-                    prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB"
+                    prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa"
                 elseif prey == "Spumella"
                     prey_db = "/Data/victoria/transcriptomes/Spumella_elongata_MMETSP1098/Spumella_elongata_CCAP955_1_MMETSP1098_cds.fa.db"
                 else
