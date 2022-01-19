@@ -38,6 +38,10 @@ Why are these ones failing ? I can change a few parameters similar to how to alt
 
 screen -r transdecoder
 
+## adding in --no_refine_starts on transdecoder and re-run
+# These libraries contain dinoflagellate hits, however the reads are short and full of k-mers. Only transdecoder works when translating without looking for start codon. These libraries may hold interesting information as the cob gene from blastodinium are present. However it is so significantly bad, they will not be used for multi-protein phylogenomics.
+
+
 ```julia
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
   dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/redo_transdecoder/"
