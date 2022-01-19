@@ -351,7 +351,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         run(`/opt/TransDecoder-TransDecoder-v5.5.0/TransDecoder.Predict
             -t $clean_transcripts_file
             --retain_blastp_hits $blastp_output
-            --no_refine_start`)
+            --no_refine_starts`)
         cd(path_)
 
         dir_rename_headers(rnaspades_dir, ".transdecoder.pep",  organism)
