@@ -63,7 +63,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
                 check_contamination_removal = true
             elseif step == "prey_removal"
                 if prey == "Procryptobia"
-                    prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa"
+                    prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB"
                 elseif prey == "Spumella"
                     prey_db = "/Data/victoria/transcriptomes/Spumella_elongata_MMETSP1098/Spumella_elongata_CCAP955_1_MMETSP1098_cds.fa.db"
                 else
@@ -286,7 +286,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             removed_contaminations *= "no_" * name * "_" # e.g. "no_Chordata_no_Bacteria_no_Arthropoda_"
         end
         prey_blastn_output_file = contamination_dir * organism * "_" * removed_contaminations * "vs_" * prey * ".blastnout"
-        prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa"
+        prey_db = "/Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB"
         run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastn
             -task megablast
             -query $clean_transcripts_file
