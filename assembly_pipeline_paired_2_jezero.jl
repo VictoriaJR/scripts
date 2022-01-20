@@ -101,10 +101,10 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
     # use CUTADAPT to remove adapters from paired-end reads
     # for this script i use the previously made cutadapt from the original assemblies
     cutadapt_dir = dir_path * "cutadapt/"
-    cutadapt_output_file1 = cutadapt_dir * organism * "_S2_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S2_R2_001.cutadapt.fastq"
-    cutadapt_output_file2 = cutadapt_dir * organism * "_S7_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S7_R2_001.cutadapt.fastq"
+    cutadapt_output_file1 = cutadapt_dir * organism * "_S1_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S1_R2_001.cutadapt.fastq"
+    cutadapt_output_file2 = cutadapt_dir * organism * "_S2_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S2_R2_001.cutadapt.fastq"
     if check_cutadapt
         if !isdir(cutadapt_dir)
             mkdir(cutadapt_dir)
