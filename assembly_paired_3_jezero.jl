@@ -89,18 +89,12 @@ function transcriptome_assembly_paired_3_jezero(dir_path::AbstractString, organi
     # use FASTQC for quality analysis
 
     fastqc_dir = dir_path * "fastqc_raw_reads/"
-    raw_seq_reads1_1 = dir_path * organism * "_S1_R1_001.fastq.gz"
-    raw_seq_reads1_2 = dir_path * organism * "_S1_R2_001.fastq.gz"
-    raw_seq_reads2_1 = dir_path * organism * "_S2_R1_001.fastq.gz"
-    raw_seq_reads2_2 = dir_path * organism * "_S2_R2_001.fastq.gz"
-    raw_seq_reads3_1 = dir_path * organism * "_S3_R1_001.fastq.gz"
-    raw_seq_reads3_2 = dir_path * organism * "_S3_R2_001.fastq.gz"
-    raw_seq_reads4_1 = dir_path * organism * "_S4_R1_001.fastq.gz"
-    raw_seq_reads4_2 = dir_path * organism * "_S4_R2_001.fastq.gz"
-    raw_seq_reads5_1 = dir_path * organism * "_S5_R1_001.fastq.gz"
-    raw_seq_reads5_2 = dir_path * organism * "_S5_R2_001.fastq.gz"
-    raw_seq_reads6_1 = dir_path * organism * "_S6_R1_001.fastq.gz"
-    raw_seq_reads6_2 = dir_path * organism * "_S6_R2_001.fastq.gz"
+    # raw_seq_reads1_1 = dir_path * organism * "_S1_R1_001.fastq.gz"
+    # raw_seq_reads1_2 = dir_path * organism * "_S1_R2_001.fastq.gz"
+    # raw_seq_reads2_1 = dir_path * organism * "_S2_R1_001.fastq.gz"
+    # raw_seq_reads2_2 = dir_path * organism * "_S2_R2_001.fastq.gz"
+    # raw_seq_reads3_1 = dir_path * organism * "_S3_R1_001.fastq.gz"
+    # raw_seq_reads3_2 = dir_path * organism * "_S3_R2_001.fastq.gz"
     if check_fastqc
         if !isdir(fastqc_dir)
             mkdir(fastqc_dir)
@@ -247,7 +241,7 @@ function transcriptome_assembly_paired_3_jezero(dir_path::AbstractString, organi
         run(`bowtie2-build $transcripts_file $bowtie2_prefix`)
         run(`bowtie2
             -x $bowtie2_prefix
-            -U $cutadapt_output_file1,$cutadapt_paired_output_file1,$cutadapt_output_file2,$cutadapt_paired_output_file2,$cutadapt_output_file3,$cutadapt_paired_output_file3,$cutadapt_output_file4,$cutadapt_paired_output_file4
+            -U $cutadapt_output_file1,$cutadapt_paired_output_file1,$cutadapt_output_file2,$cutadapt_paired_output_file2,$cutadapt_output_file3,$cutadapt_paired_output_file3,$cutadapt_output_file4,$cutadapt_paired_output_file4,$cutadapt_output_file5,$cutadapt_paired_output_file5,$cutadapt_output_file6,$cutadapt_paired_output_file6
             -S $bowtie2_output_file
             -p 24`)
         cd(path_)
