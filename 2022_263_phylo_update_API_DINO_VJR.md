@@ -56,6 +56,26 @@ end
 #### Collect Psammosa pacifica + Colp-34? transcriptomes (document whats added and what has not yet been added, should I combine these?):
 
 # location of latest psammosa assembly (last 3 transcriptomes)
+
+Combine all Psammosa transcriptomes (sequenced using miseq or nextseq)
+- these raw data were taken from my scratch folder in soyouz
+
+##### 5 psammosa transcriptomes: Psammosa_pacifica_2017_2020
+I need to rename these files (thats ok because these are not original fastqs)
+#### Denis (2017) 20 cells
+Ppac1_S0_S1_R1_001.fastq.gz 
+Ppac1_S0_S1_R2_001.fastq.gz
+
+Victoria (2020) 3 transcriptomes
+
+Victoria 2019 1 transcriptome (5 individual cells)
+Ppac1_S1_R1_001.fastq.gz
+Ppac1_S1_R2_001.fastq.gz
+Undetermined_S0_R1_001.fastq.gz
+Undetermined_S0_R2_001.fastq.gz
+
+
+
 /Data/victoria/psammosa/reads_n_assemblies/Psp2020_rnaspades/
 
 ** did not remove spumella ; however it has low reads
@@ -74,7 +94,25 @@ for d in readdir(dir; join=true)
         d_name = relpath(d, dir)
         transcriptome_assembly_paired_jezero(
                 d, d_name,
-                "alveolata_odb10", ["Chordata", "Bacteria"], "NoPrey", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
+                "alveolata_odb10", ["Chordata", "Bacteria"], "Procryptobia", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
+end
+
+  include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
+  dir = "/Data/victoria/psammosa/reads_n_assemblies/C34_Oct152020/"
+for d in readdir(dir; join=true)
+        d_name = relpath(d, dir)
+        transcriptome_assembly_paired_jezero(
+                d, d_name,
+                "alveolata_odb10", ["Chordata", "Bacteria"], "Procryptobia", ["blobtools"])
+end
+
+  include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
+  dir = "/Data/victoria/psammosa/reads_n_assemblies/C34_Oct152020/"
+for d in readdir(dir; join=true)
+        d_name = relpath(d, dir)
+        transcriptome_assembly_paired_jezero(
+                d, d_name,
+                "alveolata_odb10", ["Chordata", "Bacteria"], "Procryptobia", ["contamination_removal", "prey_removal", "transdecoder"])
 end
 ```
 
