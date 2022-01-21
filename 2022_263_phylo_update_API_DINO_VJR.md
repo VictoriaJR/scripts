@@ -102,6 +102,19 @@ mv C34-3_S2_R2_001.cutadapt.fastq C34_2017_2020_S2_R2_001.cutadapt.fastq
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
 transcriptome_assembly_paired_2_jezero("/Data/victoria/psammosa/C34_2017_2020/", "C34_2017_2020", "alveolata_odb10", ["Chordata", "Bacteria"], "Procryptobia", ["rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
 
+## Cleaning step
+
+makeblastdb -in both_Procyrptobia.fa -dbtype nucl -out both_Procyrptobia.DB
+
+blastn -task megablast -query soft_filtered_transcripts_no_Chordata_no_Bacteria.fasta -db /Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB -outfmt 6 -num_threads 24 -evalue 1e-25 -max_target_seqs 1 -out c34_clean_vs_Procryptobia.blastnout
+
+cut -f 1 c34_clean_vs_Procryptobia.blastnout > Kinetoplastid_contigs.list
+996 Kinetoplastid_contigs.list
+
+perl /Data/victoria/scripts/lookup_reverse.pl soft_filtered_transcripts_no_Chordata_no_Bacteria.fasta Kinetoplastid_contigs.list
+
+mv lookup_out.fasta Trinity_noBac_noPrey.fasta
+
 
 
 ```
