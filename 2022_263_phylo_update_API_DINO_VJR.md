@@ -108,6 +108,7 @@ makeblastdb -in both_Procyrptobia.fa -dbtype nucl -out both_Procyrptobia.DB
 
 blastn -task megablast -query soft_filtered_transcripts_no_Chordata_no_Bacteria.fasta -db /Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB -outfmt 6 -num_threads 24 -evalue 1e-25 -max_target_seqs 1 -out c34_clean_vs_Procryptobia.blastnout
 
+#get script from soyouz
 cut -f 1 c34_clean_vs_Procryptobia.blastnout > Kinetoplastid_contigs.list
 996 Kinetoplastid_contigs.list
 
