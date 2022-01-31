@@ -20,9 +20,19 @@ for d in readdir(dir; join=true)
         d_name = relpath(d, dir)
         transcriptome_assembly_paired_jezero(
                 d, d_name,
-                "alveolata_odb10", ["Chordata", "Bacteria"], "NoPrey", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
+                "alveolata_odb10", ["Chordata", "Bacteria", "Malassezia"], "NoPrey", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
 end
 
+## SCREEN screen -r neq TO RERUN THIS : SERVER WAS FULL
+
+  include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
+  dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/assemblies/"
+for d in readdir(dir; join=true)
+        d_name = relpath(d, dir)
+        transcriptome_assembly_paired_jezero(
+                d, d_name,
+                "alveolata_odb10", ["Chordata", "Bacteria", "Malassezia"], "NoPrey", ["contamination_removal", "transdecoder"])
+end
 ```
 
 ### TO DO 
