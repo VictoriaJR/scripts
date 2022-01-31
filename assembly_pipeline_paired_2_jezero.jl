@@ -327,7 +327,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
         path_ = pwd()
         cd(rnaspades_dir)
         # Identify the ORFs in the cleaned fasta assembly using ###TransDecoder:
-        clean_transcripts_file = /Data/victoria/psammosa/C34_2017_2020_rnaspades/soft_filtered_transcripts_no_Chordata_no_Bacteria_no_Procryptobia.fasta
+        clean_transcripts_file = "/Data/victoria/psammosa/C34_2017_2020_rnaspades/soft_filtered_transcripts_no_Chordata_no_Bacteria_no_Procryptobia.fasta"
         run(`/opt/TransDecoder-TransDecoder-v5.5.0/TransDecoder.LongOrfs -t $clean_transcripts_file`)
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
