@@ -117,6 +117,7 @@ perl /Data/victoria/scripts/lookup_reverse.pl soft_filtered_transcripts_no_Chord
 mv lookup_out.fasta Trinity_noBac_noPrey.fasta
 
 
+* do this for psammosa pacifica
 
 ```
 
