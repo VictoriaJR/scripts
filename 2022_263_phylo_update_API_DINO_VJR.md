@@ -25,20 +25,8 @@ for d in readdir(dir; join=true)
                 "alveolata_odb10", ["Chordata", "Bacteria", "Malassezia"], "NoPrey", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
 end
 ```
-##### SCREEN screen -r neq TO RERUN THIS
 
-```julia
-  include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
-  dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/assemblies/"
-for d in readdir(dir; join=true)
-        d_name = relpath(d, dir)
-        transcriptome_assembly_paired_jezero(
-                d, d_name,
-                "alveolata_odb10", ["Chordata", "Bacteria", "Malassezia"], "NoPrey", ["contamination_removal", "transdecoder"])
-end
-```
-
-#### Look into older transcriptomes that failed transdecoder:
+### Look into older transcriptomes that failed transdecoder:
 - take from rosetta and move to jezero
 - adding in --no_refine_starts on transdecoder and re-run
 - These libraries contain dinoflagellate hits, however the reads are short and full of k-mers. Only transdecoder works when translating without looking for start codon. These libraries may hold interesting information as the cob gene from blastodinium are present. However it is so significantly bad, they will not be used for multi-protein phylogenomics.
@@ -59,57 +47,65 @@ for d in readdir(dir; join=true)
 end
 ```
 
-### Collect Psammosa pacifica + Colp-34? transcriptomes (document whats added and what has not yet been added, should I combine these?):
+### Combined Psammosa pacifica & Colp-34 transcriptomes
 
-##### 5 psammosa transcriptomes: Psp_2017_2020
+#### 5 psammosa transcriptomes: Psp_2017_2020
 - Combine all Psammosa transcriptomes (sequenced using miseq or nextseq)
 - these raw data were taken from my scratch folder in soyouz
 - I need to rename these files (thats ok because these are not original fastqs)
 
-#### Victoria (2019) 5 individual cells
+##### Victoria (2019) 5 individual cells
+```bash
 mv Ppac1_S1_R1_001.fastq.gz Psp_2017_2020_S1_R1_001.fastq.gz
 mv Ppac1_S1_R2_001.fastq.gz Psp_2017_2020_S1_R2_001.fastq.gz
 mv Undetermined_S0_R1_001.fastq.gz Psp_2017_2020_S2_R1_001.fastq.gz
 mv Undetermined_S0_R2_001.fastq.gz Psp_2017_2020_S2_R2_001.fastq.gz
-
-#### Denis (2017) 20 cells
+```
+##### Denis (2017) 20 cells
+```bash
 mv PsammosaS-C_S1_L001_R1_001.fastq.gz Psp_2017_2020_S3_R1_001.fastq.gz
 mv PsammosaS-C_S1_L001_R2_001.fastq.gz Psp_2017_2020_S3_R2_001.fastq.gz
-
-#### Victoria (2020) 3 transcriptomes
+```
+##### Victoria (2020) 3 transcriptomes
+```bash
 mv Psp2020_S14_R1_001.cutadapt.fastq Psp_2017_2020_S4_R1_001.cutadapt.fastq
 mv Psp2020_S14_R2_001.cutadapt.fastq Psp_2017_2020_S4_R2_001.cutadapt.fastq
 mv Psp2020_S18_R1_001.cutadapt.fastq Psp_2017_2020_S5_R1_001.cutadapt.fastq
 mv Psp2020_S18_R2_001.cutadapt.fastq Psp_2017_2020_S5_R2_001.cutadapt.fastq
 mv Psp2020_S19_R1_001.cutadapt.fastq Psp_2017_2020_S6_R1_001.cutadapt.fastq
 mv Psp2020_S19_R2_001.cutadapt.fastq Psp_2017_2020_S6_R2_001.cutadapt.fastq
+```
 
+#### Combine all C-34 transcriptomes: C34_2017_2020
 
-#### Combine two C-34 transcriptomes: C34_2017_2020
-
-#### Denis (2017) whole culture transcriptome
+##### Denis (2017) whole culture transcriptome
+```bash
 mv Colp-34RNA_S2_L001_R1_001.fastq.gz C34_2017_2020_S1_R1_001.fastq.gz
 mv Colp-34RNA_S2_L001_R2_001.fastq.gz C34_2017_2020_S1_R2_001.fastq.gz
-
-#### Victoria (2020) single cell transcriptome
+```
+##### Victoria (2020) single cell transcriptome
+```bash
 mv C34-3_S2_R1_001.cutadapt.fastq C34_2017_2020_S2_R1_001.cutadapt.fastq
 mv C34-3_S2_R2_001.cutadapt.fastq C34_2017_2020_S2_R2_001.cutadapt.fastq
+```
 
+#### Clean up Psammosa data 
 
+##### Assembly of Psammosa pacifica
 ```julia
-## Psammosa pacifica ** Do clean up step by hand
-
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
   transcriptome_assembly_paired_3_jezero("/Data/victoria/psammosa/Psp_2017_2020/", "Psp_2017_2020", "alveolata_odb10", ["Chordata", "Bacteria"], "Spumella", ["rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
+```
 
-
-### Colp-34 ** Do clean up step by hand
-
+#### Assembly of Colp-34
+```julia
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
 transcriptome_assembly_paired_2_jezero("/Data/victoria/psammosa/C34_2017_2020/", "C34_2017_2020", "alveolata_odb10", ["Chordata", "Bacteria"], "Procryptobia", ["rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
+```
 
-## Cleaning step
 
+##### Cleaning step
+```bash
 makeblastdb -in both_Procyrptobia.fa -dbtype nucl -out both_Procyrptobia.DB
 
 blastn -task megablast -query soft_filtered_transcripts_no_Chordata_no_Bacteria.fasta -db /Data/victoria/transcriptomes/Procryptobia/Procryptobia_both.fa.DB -outfmt 6 -num_threads 24 -evalue 1e-25 -max_target_seqs 1 -out c34_clean_vs_Procryptobia.blastnout
@@ -121,10 +117,6 @@ cut -f 1 c34_clean_vs_Procryptobia.blastnout > Kinetoplastid_contigs.list
 perl /Data/victoria/scripts/lookup_reverse.pl soft_filtered_transcripts_no_Chordata_no_Bacteria.fasta Kinetoplastid_contigs.list
 
 mv lookup_out.fasta Trinity_noBac_noPrey.fasta
-
-
-* do this for psammosa pacifica
-
 ```
 
 
