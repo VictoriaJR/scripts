@@ -4,8 +4,8 @@
 last update Feb 24 2022
 
 
-## AMYLOODINIUM
-### Download amyloodinium transcriptome on rosetta (had trouble using jezero; it was not responding)
+### AMYLOODINIUM
+#### Download amyloodinium transcriptome on rosetta (had trouble using jezero; it was not responding)
 `/Data/victoria/software/sratoolkit.2.10.8-ubuntu64/bin/fastq-dump SRR8776921 --split-files`
 
 ### Move Amyloodinium ocellatum to jezero and run assembly script overnight:
