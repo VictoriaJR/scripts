@@ -4,16 +4,17 @@
 last update Feb 24 2022
 
 
-### AMYLOODINIUM
-#### Download amyloodinium transcriptome on rosetta (had trouble using jezero; it was not responding)
-`/Data/victoria/software/sratoolkit.2.10.8-ubuntu64/bin/fastq-dump SRR8776921 --split-files`
-
-### Move Amyloodinium ocellatum to jezero and run assembly script overnight:
-
-rename fastq files
+### Amyloodinium ocellatum
+#### Download amyloodinium transcriptome on rosetta
+```bash
+/Data/victoria/software/sratoolkit.2.10.8-ubuntu64/bin/fastq-dump SRR8776921 --split-files
+```
+#### rename fastq files
+```bash
 mv SRR8776921_1.fastq amyloodinium_ocellatum_R1_001.fastq
 mv SRR8776921_2.fastq amyloodinium_ocellatum_R2_001.fastq
-
+```
+#### Assemble, clean and translate transcriptome on jezero
 ```julia
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
   dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/assemblies/"
@@ -23,9 +24,10 @@ for d in readdir(dir; join=true)
                 d, d_name,
                 "alveolata_odb10", ["Chordata", "Bacteria", "Malassezia"], "NoPrey", ["fastqc", "cutadapt", "rnaspades", "blastn_megablast", "diamond_blastx", "bowtie2"])
 end
+```
+##### SCREEN screen -r neq TO RERUN THIS
 
-## SCREEN screen -r neq TO RERUN THIS : SERVER WAS FULL
-
+```julia
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
   dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/assemblies/"
 for d in readdir(dir; join=true)
@@ -36,23 +38,16 @@ for d in readdir(dir; join=true)
 end
 ```
 
-### TO DO 
-#### GET PEPTIDES OF OLDER TRANSCRIPTOMES THAT HAVE NOT YET BEEN ADDED YET (DUE TO FAILED TRANSDECODER):
-# take from rosetta and move to jezero:
+#### Look into older transcriptomes that failed transdecoder:
+- take from rosetta and move to jezero
+- adding in --no_refine_starts on transdecoder and re-run
+- These libraries contain dinoflagellate hits, however the reads are short and full of k-mers. Only transdecoder works when translating without looking for start codon. These libraries may hold interesting information as the cob gene from blastodinium are present. However it is so significantly bad, they will not be used for multi-protein phylogenomics.
 
+```bash
 W_blasto1_S7 
 W_blast3_S15
-
-Why are these ones failing ? I can change a few parameters similar to how to altered them in the 10X pipeline, where it does not make a protein based on a start codon
-
-
-
-screen -r transdecoder
-
-## adding in --no_refine_starts on transdecoder and re-run
-# These libraries contain dinoflagellate hits, however the reads are short and full of k-mers. Only transdecoder works when translating without looking for start codon. These libraries may hold interesting information as the cob gene from blastodinium are present. However it is so significantly bad, they will not be used for multi-protein phylogenomics.
-
-
+```
+#### clean data and translate into peptides
 ```julia
   include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
   dir = "/Data/victoria/parasites_proj/Dec_2021_parasites/redo_transdecoder/"
@@ -64,7 +59,7 @@ for d in readdir(dir; join=true)
 end
 ```
 
-#### Collect Psammosa pacifica + Colp-34? transcriptomes (document whats added and what has not yet been added, should I combine these?):
+### Collect Psammosa pacifica + Colp-34? transcriptomes (document whats added and what has not yet been added, should I combine these?):
 
 ##### 5 psammosa transcriptomes: Psp_2017_2020
 - Combine all Psammosa transcriptomes (sequenced using miseq or nextseq)
