@@ -222,25 +222,25 @@ cp copepod_infesting_alv_3147.pep.fasta ../transcriptomes_to_add
 
 
 ### Combine datasets on Rosetta
-# combine Ina's most current version of the 263 gene tree on google drive:
-# 263genes_nov012021_IN
-# 263_genes_24april2021_VJR
+#### combine Ina's most current version of the 263 gene tree on google drive:
+#### 263genes_nov012021_IN
+#### 263_genes_24april2021_VJR
 
-# check each folder has 263 genes using `ls | wc -l`
+#### check each folder has 263 genes using `ls | wc -l`
 
-## script:
+#### script:
 
 location on rosetta: `/Data/victoria/263_db/263_genes_comb_VJR_IN`
 
 
-### Run combination script that adds both header and sequence **
+#### Run combination script that adds both header and sequence **
     Example on how to use the new combine datasets julia script (rosetta)
 
       /Data/victoria/software/julia-1.5.3/bin/julia
       include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
       combine_datasets("/Data/victoria/263_db/263_genes_comb_VJR_IN/263_combined_out_false/", "/Data/victoria/263_db/263_genes_comb_VJR_IN/263_trees_28april2021_VJR", "/Data/victoria/263_db/263_genes_comb_VJR_IN/263genes_nov012021_IN"; check_id = true
 
-### notes from previous run:
+#### notes from previous run:
 - This script will first use my dataset to make a list of all the headers and sequences.
       then it will add any header or sequence that does not match the one my
       dataset. Sometimes you will get copies of the same sequence, beacuse of slight changes
@@ -250,13 +250,13 @@ location on rosetta: `/Data/victoria/263_db/263_genes_comb_VJR_IN`
       the unwanted duplicates following yours. Do not change order of sequences.
 
 ***under construction**
-## cleaned up version is on jezero at : 
+#### cleaned up version is on jezero at : 
 
 I will collect all of Ina and My new sequences and add them to Liz's 263 curated database
 - Liz has removed many old sequences, and fixed up paralogies :) 
 - Use scafos to pull out my sequences and add to her dataset
 
-### to do after this phylo update
+#### to do after this phylo update
 Another thing I want to do: re-add transcriptomes using combined datasets (parasites from the same host infection)
 
 
