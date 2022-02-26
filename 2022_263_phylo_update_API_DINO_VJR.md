@@ -246,14 +246,14 @@ moved from `/Data/victoria/parasites_proj/Dec_2021_parasites/transcriptomes_to_a
 	  for fasta in *.fasta ; do echo $fasta'.DB' >> blastdb_list ; done  
     
 ###### Setup work space:
-	-  Copy the most up-to-date 263 gene dataset--> 263genes_jan17_comb_VJR_IN into my working directory
-	-  Copy the running_blast.pl script to the 263 genes directory and alter the path to where the blastdb_list is.
+- Copy the most up-to-date 263 gene dataset--> 263genes_jan17_comb_VJR_IN into my working directory
+- Copy the running_blast.pl script to the 263 genes directory and alter the path to where the blastdb_list is.
 
 ###### In a screen and inside the 263_genes dir, run the running_blast.pl script:
-	- This will use the original fasta files and the databases (new transcriptomes) to find genes
-	- This will create (number of new taxa) x263 blast outputs (GENE*DATABASE.blastout)
+- This will use the original fasta files and the databases (new transcriptomes) to find genes
+- This will create (number of new taxa) x263 blast outputs (GENE*DATABASE.blastout)
 	
-	   for i in *.fasta; do perl running_blast.pl $i /Data/victoria/263_api_dino_2022/transcriptomes_to_add/blastdb_list ; done
+		for i in *.fasta; do perl running_blast.pl $i /Data/victoria/263_api_dino_2022/transcriptomes_to_add/blastdb_list ; done
 
 
 
