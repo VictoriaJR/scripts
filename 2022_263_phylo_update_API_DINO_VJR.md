@@ -233,23 +233,23 @@ cp C34_2017_2020.pep.fasta /Data/victoria/parasites_proj/Dec_2021_parasites/tran
 
 ```
 
-##### All cleaned, renamed peptides:
+#### All cleaned, renamed peptides:
 location on jezero
 moved from `/Data/victoria/parasites_proj/Dec_2021_parasites/transcriptomes_to_add/` to `/Data/victoria/263_api_dino_2022/transcriptomes_to_add`
 
-##### Make blast databases for each new transcriptome that's being added:
+#### Make blast databases for each new transcriptome that's being added:
 
     for FA in *.fasta ; do makeblastdb -in $FA -dbtype prot -out $FA.DB ; done
     
-###### Make a list of all the blast databases for future programs to reference:
+##### Make a list of all the blast databases for future programs to reference:
 
 	  for fasta in *.fasta ; do echo $fasta'.DB' >> blastdb_list ; done  
     
-###### Setup work space:
+##### Setup work space:
 - Copy the most up-to-date 263 gene dataset--> 263genes_jan17_comb_VJR_IN into my working directory
 - Copy the running_blast.pl script to the 263 genes directory and alter the path to where the blastdb_list is.
 
-###### In a screen and inside the 263_genes dir, run the running_blast.pl script:
+##### In a screen and inside the 263_genes dir, run the running_blast.pl script:
 - This will use the original fasta files and the databases (new transcriptomes) to find genes
 - This will create (number of new taxa) x263 blast outputs (GENE*DATABASE.blastout)
 	
@@ -259,12 +259,6 @@ moved from `/Data/victoria/parasites_proj/Dec_2021_parasites/transcriptomes_to_a
 
 old notes below, edit as you go 
 ______________
-###### In a screen and inside the 263_genes dir, run the running_blast.pl script:
-	- This will use the original fasta files and the databases (new transcriptomes) to find genes
-	- This will create (number of new taxa) x263 blast outputs (GENE*DATABASE.blastout)
-
-	for i in *.fasta; do perl running_blast.pl $i /Data/victoria/april2021_263_genes/transcriptomes_to_add/blastdb_list ; done
-
 ###### Parse the BLAST outputs (e-value = 1e-20, query coverage = 50%) and compile all parsed output into one file containing only non redundant sequences: (This new list is called `seq_list_toadd.txt`)
 	- `batch_parsing_blast_v2.pl` will generate a file of the blastout with _parsed.txt
 	-  `get_list_toadd.pl` will print something like `Gene name: ABCE.fasta` for all the genes and output `seq_list_toadd.txt`
