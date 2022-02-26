@@ -255,84 +255,75 @@ moved from `/Data/victoria/parasites_proj/Dec_2021_parasites/transcriptomes_to_a
 	
 		for i in *.fasta; do perl running_blast.pl $i /Data/victoria/263_api_dino_2022/transcriptomes_to_add/blastdb_list ; done
 
+###### Parse the BLAST outputs (e-value = 1e-20, query coverage = 50%) and compile all parsed output into one file containing only non redundant sequences: (This new list is called `seq_list_toadd.txt`)
+- `batch_parsing_blast_v2.pl` will generate a file of the blastout with _parsed.txt
+- `get_list_toadd.pl` will print something like `Gene name: ABCE.fasta` for all the genes and output `seq_list_toadd.txt`
+
+		perl /Data/victoria/263_api_dino_2022/batch_parsing_blast_v2.pl *.blastout
+		
+		perl /Data/victoria/263_api_dino_2022/get_list_toadd.pl *_parsed.txt
+
+- We now need to trim the identified genes from our added dataset so that they don't have extensions accidentally added in the alignment.
+- To do this we blast the sequences against the swissprot data base and trim any parts of the sequences that are not well aligned with the well curated proteins.
+
+
 
 
 old notes below, edit as you go 
 ______________
-###### Parse the BLAST outputs (e-value = 1e-20, query coverage = 50%) and compile all parsed output into one file containing only non redundant sequences: (This new list is called `seq_list_toadd.txt`)
-	- `batch_parsing_blast_v2.pl` will generate a file of the blastout with _parsed.txt
-	-  `get_list_toadd.pl` will print something like `Gene name: ABCE.fasta` for all the genes and output `seq_list_toadd.txt`
 
-			perl /Data/victoria/scripts/batch_parsing_blast_v2.pl *.blastout
-			perl /Data/victoria/scripts/get_list_toadd.pl *_parsed.txt
-
-
-	- We now need to trim the identified genes from our added dataset so that they don't have extensions accidentally added in the alignment.
-	- To do this we blast the sequences against the swissprot data base and trim any parts of the sequences that are not well aligned with the well curated proteins.
 
 ###### First, make a master file of added datasets:
-	    cat *.fasta > added_datasets.fa
+	
+	cat *.fasta > added_datasets.fa
 
-	- Before running the gene finding script, make sure to move the original 263_genes fasta files (I moved them up one directory) to a new folder or else they will be overwritten/confused with new ones. You need to have the added_datasets.fa and seq_list_toadd.txt file in the same directory.
-	- by now your added_datasets.fa. will be indexed
-	- this will also create the gene.fasta output with only your sequences from the databases in it
+- Before running the gene finding script, make sure to move the original 263_genes fasta files (I moved them up one directory) to a new folder or else they will be overwritten/confused with new ones. You need to have the added_datasets.fa and seq_list_toadd.txt file in the same directory.
+- by now your added_datasets.fa. will be indexed
+- this will also create the gene.fasta output with only your sequences from the databases in it
 
-			perl /Data/victoria/scripts/lookup_single_genes.pl added_datasets.fa
-
+		perl /Data/victoria/scripts/lookup_single_genes.pl added_datasets.fa
 
 
 ##### Create a Blast database using Swissprot proteins to blast cleaned ORFs against.
-	First, make a directory:
+- First, make a directory:
 
-	     mkdir blast_db
+		mkdir blast_db
 
 ###### Inside this directory, download the most recent version of the Swissprot database:
+
 		wget ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.fasta.gz
 		gunzip uniprot_sprot.fasta.gz
 
 ##### Make a blast database with the Swissprot fasta:
-		makeblastdb -in /Data/victoria/april2021_263_genes/blast_db/uniprot_sprot.fasta -dbtype prot -out swissprot_april2021
 
-	- This script requires the seq_list_toadd.txt file and the added_datasets.fa file - it will find the sequences it needs to get in the seq_list_toadd.txt file and then find them in the added_datasets.fa file. Fasta files will then be exported for each of the 263 genes.		
-	- Blast the extracted sequences against the swissprot database. Put swissprot fasta in a different directory so it doesn't get caught up in the next steps.
+	makeblastdb -in /Data/victoria/april2021_263_genes/blast_db/uniprot_sprot.fasta -dbtype prot -out swissprot_april2021
+
+- This script requires the seq_list_toadd.txt file and the added_datasets.fa file - it will find the sequences it needs to get in the seq_list_toadd.txt file and then find them in the added_datasets.fa file. Fasta files will then be exported for each of the 263 genes.		
+- Blast the extracted sequences against the swissprot database. Put swissprot fasta in a different directory so it doesn't get caught up in the next steps.
 
 ###### In a screen, do a BLAST search:
-	- this will output a blastout of your gene.fasta file
+- this will output a blastout of your gene.fasta file
 
-	    for i in *fasta; do blastp -query $i -db /Data/victoria/april2021_263_genes/blast_db/swissprot_april2021 -evalue 1e-5 -num_alignments 5 -out $i.sprot.blastout -num_threads 25 ; done
+		for i in *fasta; do blastp -query $i -db /Data/victoria/april2021_263_genes/blast_db/swissprot_april2021 -evalue 1e-5 -num_alignments 5 -out $i.sprot.blastout -num_threads 25 ; done
 
-	- (This may not produce 263 blastout files; that's ok.)
-	- The blast search will identify sequences that should be trimmed.
-
-screen -r 2305.263
-
+- This may not produce 263 blastout files; that's ok.
+- The blast search will identify sequences that should be trimmed.
 
 ###### Use the rm_craps.pl script to trim those sequences and output a new set of trimmed fasta files ending with '.nocrap':
 
-		for i in *.fasta ; do perl /Data/victoria/scripts/rm_craps.pl $i ; done
+	for i in *.fasta ; do perl /Data/victoria/scripts/rm_craps.pl $i ; done
 
 ###### Move the nocrap files one directory up (or wherever you moved the original fastas to get them out of the way earlier):
-
+```bash
 mv *nocrap ../original_fastas
 cd ../original_fastas
 for i in *.fasta ; do cat $i $i.nocrap > $i.new ; done
+```
 
-cat: arpc3.fasta.nocrap: No such file or directory
-cat: ASF1.fasta.nocrap: No such file or directory
-cat: BRF1.fasta.nocrap: No such file or directory
-cat: CCDC113.fasta.nocrap: No such file or directory
-cat: COQ4mito.fasta.nocrap: No such file or directory
-cat: CTU1.fasta.nocrap: No such file or directory
-cat: DNAL1.fasta.nocrap: No such file or directory
-cat: ino1.fasta.nocrap: No such file or directory
-cat: IPO4.fasta.nocrap: No such file or directory
-cat: KPNB1.fasta.nocrap: No such file or directory
-cat: PLS3.fasta.nocrap: No such file or directory
-cat: RBM19.fasta.nocrap: No such file or directory
-cat: SND1.fasta.nocrap: No such file or directory
+- this will result in some "no such file or directory" alerts if there were less than 263 blastout files. again, this is fine.)
+- This will output new fasta files for each gene called *.new
 
-  - this will result in some "no such file or directory" alerts if there were less than 263 blastout files. again, this is fine.)
-  - This will output new fasta files for each gene called *.new
+
 
 
 *tree construction*
