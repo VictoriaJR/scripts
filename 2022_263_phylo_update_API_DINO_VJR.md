@@ -143,7 +143,8 @@ GZC_10142021
 M6
 
 Final combined Psammosa transcriptomes:
-
+Psp_2017_2020
+C34_2017_2020
 
 
 ```julia
