@@ -268,12 +268,6 @@ moved from `/Data/victoria/parasites_proj/Dec_2021_parasites/transcriptomes_to_a
 - To do this we blast the sequences against the swissprot data base and trim any parts of the sequences that are not well aligned with the well curated proteins.
 
 
-
-
-old notes below, edit as you go 
-______________
-
-
 ###### First, make a master file of added datasets:
 	
 	cat *.fasta > added_datasets.fa
@@ -282,8 +276,7 @@ ______________
 - by now your added_datasets.fa. will be indexed
 - this will also create the gene.fasta output with only your sequences from the databases in it
 
-		perl /Data/victoria/scripts/lookup_single_genes.pl added_datasets.fa
-
+		perl /Data/victoria/263_api_dino_2022/lookup_single_genes.pl added_datasets.fa
 
 ##### Create a Blast database using Swissprot proteins to blast cleaned ORFs against.
 - First, make a directory:
@@ -297,7 +290,7 @@ ______________
 
 ##### Make a blast database with the Swissprot fasta:
 
-	makeblastdb -in /Data/victoria/april2021_263_genes/blast_db/uniprot_sprot.fasta -dbtype prot -out swissprot_april2021
+	makeblastdb -in /Data/victoria/263_api_dino_2022/blast_db/uniprot_sprot.fasta -dbtype prot -out swissprot_feb2022
 
 - This script requires the seq_list_toadd.txt file and the added_datasets.fa file - it will find the sequences it needs to get in the seq_list_toadd.txt file and then find them in the added_datasets.fa file. Fasta files will then be exported for each of the 263 genes.		
 - Blast the extracted sequences against the swissprot database. Put swissprot fasta in a different directory so it doesn't get caught up in the next steps.
@@ -305,10 +298,18 @@ ______________
 ###### In a screen, do a BLAST search:
 - this will output a blastout of your gene.fasta file
 
-		for i in *fasta; do blastp -query $i -db /Data/victoria/april2021_263_genes/blast_db/swissprot_april2021 -evalue 1e-5 -num_alignments 5 -out $i.sprot.blastout -num_threads 25 ; done
+		for i in *fasta; do blastp -query $i -db /Data/victoria/263_api_dino_2022/blast_db/swissprot_feb2022 -evalue 1e-5 -num_alignments 5 -out $i.sprot.blastout -num_threads 25 ; done
 
 - This may not produce 263 blastout files; that's ok.
 - The blast search will identify sequences that should be trimmed.
+
+
+
+
+
+
+old notes below, edit as you go 
+______________
 
 ###### Use the rm_craps.pl script to trim those sequences and output a new set of trimmed fasta files ending with '.nocrap':
 
