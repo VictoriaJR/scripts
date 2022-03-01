@@ -321,38 +321,28 @@ several sequences were completely cut out when using the no crap script:
 Use of uninitialized value in substr at ../rm_craps.pl line 49, <GEN2> line 59019.
 Use of uninitialized value $short_seq in concatenation (.) or string at ../rm_craps.pl line 50, <GEN2> line 54847.
 
-SINGLE GENE TREES CONSTRUCTION
+#### SINGLE GENE TREES CONSTRUCTION
 In a screen, make and trim alignments for all genes with new, cleaned sequences added using Linsi and Trimal:
 
 	for i in *.new ; do linsi --thread 24 $i > $i.linsi ; done
+	for i in *.linsi ; do trimal -in $i -out $i.trimal -gt 0.8 ; done
 
-
-old notes below, edit as you go 
-______________
-
-
-*tree construction*
-SINGLE GENE TREES CONSTRUCTION
-
-###jezero
-	for i in *.linsi ; do /opt/trimAl/source/trimal -in $i -out $i.trimal -gt 0.8 ; done
-
-  for EFTUD1 (where alignments were so trimmed, that only 3 aa length sequences remained)
+##### for EFTUD1 (where alignments were so trimmed, that only 3 aa length sequences remained)
+	
 	for i in *.linsi ; do trimal -in $i -out $i.trimal -gt 0.7 ; done
 
-
-Remove any headers that lack sequences (may not exist):
+##### Remove any headers that lack sequences (may not exist):
 
 	for i in *.trimal ; do awk 'BEGIN {RS = ">" ; FS = "\n" ; ORS = ""} {if ($2) print ">"$0}' $i > $i.clean ; done
 
-	Run the trees: SWTICH TO COMPUTE CANADA now!
-
-	Upload *.trimal.clean files to ssh vjackor@graham.computecanada.ca to scratch folder #DONE ON MARCH 29 2021
+##### Run the trees on compute canada
+- Upload *.trimal.clean files to ssh vjackor@graham.computecanada.ca to scratch folder # done on march 1 2022
 
 		python /home/vjackor/scripts/RAxML_263_April2020_2.py '*.trimal.clean'
 		for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
 
-
+old notes below, edit as you go 
+______________
 	*** some files were taking a long time to run on graham, so i made a list what
 	was remaining in the squeue -u vjackor que, and used that to pull the *.clean
 	files from soyouz and put in their own folder and put on cedar
