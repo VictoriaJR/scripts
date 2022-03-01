@@ -315,11 +315,7 @@ for i in *.fasta ; do cat $i $i.nocrap > $i.new ; done
 ```
 - this will result in some "no such file or directory" alerts if there were less than 263 blastout files. again, this is fine.)
 - This will output new fasta files for each gene called *.new
-
-##### note possible error?
-several sequences were completely cut out when using the no crap script:
-Use of uninitialized value in substr at ../rm_craps.pl line 49, <GEN2> line 59019.
-Use of uninitialized value $short_seq in concatenation (.) or string at ../rm_craps.pl line 50, <GEN2> line 54847.
+- **Note: no files for genes: COQ4mito, CTU1, MMAAmito, PLS3**
 
 #### SINGLE GENE TREES CONSTRUCTION
 In a screen, make and trim alignments for all genes with new, cleaned sequences added using Linsi and Trimal:
