@@ -331,6 +331,36 @@ In a screen, make and trim alignments for all genes with new, cleaned sequences 
 
 	for i in *.trimal ; do awk 'BEGIN {RS = ">" ; FS = "\n" ; ORS = ""} {if ($2) print ">"$0}' $i > $i.clean ; done
 
+```julia
+function dir_remove_empty_seq(dir)
+	for f in readdir(dir)
+		file_remove_empty_seq(f)
+	end
+end
+
+function file_remove_empty_seq(file)
+	lines = split(read(file, String), ">"; keepempty = false)
+	clean = file * ".no_empty_seq"
+	open(clean, "w") do io
+		for line in lines
+			split_line = split(line, "\n"; limit = 2)
+			header = split_line[1]
+			seq = split_line[2]
+			if !isempty(replace(replace(seq, "\n" => ""), "-" => ""))
+				write(io, ">" * header * "\n" * seq)
+			end
+		end
+	end
+	return clean
+end
+
+dir_remove_empty_seq("/Data/victoria/263_api_dino_2022/original_263/clean/")
+
+```
+```bash
+rename 's/.no_empty_seq//' *seq
+```
+
 ##### Run the trees on compute canada
 - Upload *.trimal.clean files to ssh vjackor@graham.computecanada.ca to scratch folder # done on march 1 2022
 
@@ -359,9 +389,7 @@ ______________
 	python /home/vjackor/scripts/single_gene_tree_sub_scripts_RAxML_SSE3_PTHREADS.py '*.trimal.clean'
 	for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
 
-### Here I used a newly written julia script to identify trimmed files on cc that
-### were not run beacuse of empty sequences: re-run_fastas_for_263.jl
-rename 's/.no_empty_seq.no_empty_seq.no_empty_seq.no_empty_seq.no_empty_seq//' *seq
+
 
 		#### CLEAN TREES
 
