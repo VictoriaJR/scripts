@@ -385,17 +385,15 @@ function check_for_reruns(dir)
         mkdir(new_dir)
     end
     for f in readdir(dir)
-        if !startswith(f, prefix_w1) && !startswith(f, prefix_w2) && !startswith(f, prefix_w3) &&
+        if !startswith(f, prefix_w1) && !startswith(f, prefix_w2) && !startswith(f, prefix_w3) && !startswith(f, prefix_c) &&
                 !startswith(f, prefix_w4) && !startswith(f, prefix_w5) && !endswith(f, suffix_w1) && !endswith(f, suffix_w2)
-            for d in readdir(dir)
-                if !startswith(d, prefix_c * f)
-                    cp(joinpath(dir,f), new_dir; force=true)
-                end
+            if !any(d -> startswith(d, prefix_c * f), readdir(dir))
+                cp(dir * "/" * f, new_dir * "/" * f; force=false)
             end
         end
     end
 end
-check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022/")
+check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022")
 ```
     
 
