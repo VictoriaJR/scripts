@@ -367,21 +367,43 @@ rename 's/.no_empty_seq//' *seq
 		python /home/vjackor/scripts/RAxML_263_April2020_2.py '*.trimal.clean'
 		for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
 
+##### Check for re-runs
+- Make a new output folder called `rerun` composed of all the files that did not generate final RAxML trees.
+
+```julia
+function check_for_reruns(dir)
+    prefix_w1 = "RAxML_info."
+    prefix_w2 = "RAxML_bootstrap."
+    prefix_w3 = "RAxML_bipartitionsBranchLabels."
+    prefix_w4 = "RAxML_bestTree."
+    prefix_w5 = "sub_"
+    suffix_w1 = ".out"
+    suffix_w2 = ".reduced"
+    prefix_c = "RAxML_bipartitions."
+    new_dir = dir * "/rerun"
+    if !isdir(new_dir)
+        mkdir(new_dir)
+    end
+    for f in readdir(dir)
+        if !startswith(f, prefix_w1) && !startswith(f, prefix_w2) && !startswith(f, prefix_w3) &&
+                !startswith(f, prefix_w4) && !startswith(f, prefix_w5) && !endswith(f, suffix_w1) && !endswith(f, suffix_w2)
+            for d in readdir(dir)
+                if !startswith(d, prefix_c * f)
+                    cp(joinpath(dir,f), new_dir; force=true)
+                end
+            end
+        end
+    end
+end
+check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022/")
+```
+    
+
+
+
+
 old notes below, edit as you go 
 ______________
-	*** some files were taking a long time to run on graham, so i made a list what
-	was remaining in the squeue -u vjackor que, and used that to pull the *.clean
-	files from soyouz and put in their own folder and put on cedar
-	```julia
-	/Data/victoria/software/julia-1.5.3/bin/julia
-	fasta_list_file = "/Data/victoria/march2021/263_genes_27march2021/fasta_list_file.txt"
-	for line in eachline(fasta_list_file)
-	    line_name = line * ".fasta.new.linsi.trimal.clean"
-	        run(`cp $line_name /Data/victoria/march2021/263_genes_27march2021/to_download_on_cedar`)
-	end
-	```
-	remaining on cedar:
-
 	#run this first in the folder of the RAxML program
 	#compile the type of raxml software I want to use on my local system
 	make -f Makefile.SSE3.PTHREADS.gcc
