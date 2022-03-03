@@ -371,7 +371,7 @@ rename 's/.no_empty_seq//' *seq
 - Make a new output folder called `rerun` composed of all the files that did not generate final RAxML trees.
 
 ```julia
-function check_for_reruns(dir)
+function check_for_reruns(dir, re_run_dir)
     prefix_w1 = "RAxML_info."
     prefix_w2 = "RAxML_bootstrap."
     prefix_w3 = "RAxML_bipartitionsBranchLabels."
@@ -380,20 +380,16 @@ function check_for_reruns(dir)
     suffix_w1 = ".out"
     suffix_w2 = ".reduced"
     prefix_c = "RAxML_bipartitions."
-    new_dir = dir * "/rerun"
-    if !isdir(new_dir)
-        mkdir(new_dir)
-    end
     for f in readdir(dir)
-        if !startswith(f, prefix_w1) && !startswith(f, prefix_w2) && !startswith(f, prefix_w3) && !startswith(f, prefix_c) &&
+        if isfile(f) && !startswith(f, prefix_w1) && !startswith(f, prefix_w2) && !startswith(f, prefix_w3) && !startswith(f, prefix_c) &&
                 !startswith(f, prefix_w4) && !startswith(f, prefix_w5) && !endswith(f, suffix_w1) && !endswith(f, suffix_w2)
             if !any(d -> startswith(d, prefix_c * f), readdir(dir))
-                cp(dir * "/" * f, new_dir * "/" * f; force=false)
+                cp(f, re_run_dir * "/" * f; force=false)
             end
         end
     end
 end
-check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022")
+check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022", "/home/vjackor/scratch/263_genes_Feb2022/rerun")
 ```
     
 
