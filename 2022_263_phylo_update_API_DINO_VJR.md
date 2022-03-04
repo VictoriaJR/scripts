@@ -364,10 +364,18 @@ rename 's/.no_empty_seq//' *seq
 ##### Run the trees on compute canada
 - Upload *.trimal.clean files to ssh vjackor@graham.computecanada.ca to scratch folder # done on march 1 2022
 
-		python /home/vjackor/scripts/RAxML_263_April2020_2.py '*.trimal.clean'
-		for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
+graham:
 
-##### Check for re-runs
+	python /home/vjackor/scripts/RAxML_263_April2020_2.py '*.trimal.clean'
+	for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
+		
+cedar:	
+
+	make -f Makefile.SSE3.PTHREADS.gcc
+	python /home/vjackor/scripts/single_gene_tree_sub_scripts_RAxML_SSE3_PTHREADS.py '*.trimal.clean'
+	for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
+
+##### Check for failed computations, move to re-runs folder
 - Make a new output folder called `rerun` composed of all the files that did not generate final RAxML trees.
 
 ```julia
@@ -398,14 +406,6 @@ check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022", "/home/vjackor/scrat
 
 old notes below, edit as you go 
 ______________
-	#run this first in the folder of the RAxML program
-	#compile the type of raxml software I want to use on my local system
-	make -f Makefile.SSE3.PTHREADS.gcc
-
-	python /home/vjackor/scripts/single_gene_tree_sub_scripts_RAxML_SSE3_PTHREADS.py '*.trimal.clean'
-	for SUBFILE in *.sh ; do sbatch $SUBFILE ; done
-
-
 
 		#### CLEAN TREES
 
