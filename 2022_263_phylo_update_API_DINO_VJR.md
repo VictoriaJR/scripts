@@ -402,18 +402,13 @@ check_for_reruns("/home/vjackor/scratch/263_genes_Feb2022", "/home/vjackor/scrat
     
 
 
+##### CLEAN TREES
 
-
-old notes below, edit as you go 
-______________
-
-		#### CLEAN TREES
-
-		Make a new directory called coloured_trees
-		- Copy files ending in .new from 1_pre_tree_pipeline: these files contain
-			untrimmed protein sequences from the orginial files + the new dino sequences
-		- Make sure original fasta files (prior to trimming) and coloured trees are in one folder
-		- Make single line format files from the .new files (will produce .sl files)
+Make a new directory called coloured_trees
+- Copy files ending in .new from 1_pre_tree_pipeline: these files contain
+untrimmed protein sequences from the orginial files + the new dino sequences
+- Make sure original fasta files (prior to trimming) and coloured trees are in one folder
+- Make single line format files from the .new files (will produce .sl files)
 
 
 			for file in *.new; do python /Data/victoria/scripts/single_line_fasta.py $file; done
@@ -457,23 +452,12 @@ rename: thecate_dino_exH11 to unknown_dino_exH11
 		 Rename these cleaned_fastas
 
 		grep -c 'unknown_dino_112120-11' *.cleaned
-		grep -c 'unknown_dino_exH11' *.cleaned
-
-
-
-		grep -c 'yellow_egg' *.cleaned
-		grep -c 'thecate_dino_20201206-3' *.cleaned
-		grep -c 'Unknown_112120-10' *.cleaned
-		grep -c 'white_blasto_sporo_exH8' *.cleaned
-		grep -c 'oodinium_1031' *.cleaned
-		grep -c 'white_blast2_who_exH6' *.cleaned
-		grep -c 'white_blasto_exH10' *.cleaned
-		grep -c 'white_blast_gon_exH9' *.cleaned
-		grep -c 'white_blasto_spo_exH9' *.cleaned
 
 		rename 's/.fasta.new.sl.cleaned/.fasta/' *.cleaned
 
 
+old notes below, edit as you go 
+______________
 
 		##### Scafos : Concatentate 263 genes
 		(on Soyouz: /opt/scafos/scafos)
