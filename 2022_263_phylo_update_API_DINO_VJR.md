@@ -478,14 +478,15 @@ rename: thecate_dino_exH11 to unknown_dino_exH11
 ##### tree 1 on soyouz
 
 ##### Scafos : Concatentate 263 genes
-		(on Soyouz: /opt/scafos/scafos)
+Soyouz: /opt/scafos/scafos
+jezero: /usr/local/bin/scafos
 
 
-		    screen -r 263
+	screen -r 263
 
-		Aligned all clean alignments with linsi (can do overnight in a screen)
+Aligned all clean alignments with linsi (can do overnight in a screen)
 
-		    for fasta in *.fasta; do linsi --thread 24 $fasta > $fasta.linsi; done
+	for fasta in *.cleaned; do linsi --thread 24 $fasta > $cleaned.linsi; done
 
 
 		## do next
