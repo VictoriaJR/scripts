@@ -422,33 +422,50 @@ Move to rosetta
 		include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
 		dir_extract_original_and_coloured_taxa("/Data/victoria/263_june2022/coloured/", "ff0000")
 
-		Move the cleaned fasta files (.cleaned) to a new directory (ex. 263_genes_24april2021_VJR). Enter this new directory and remove all empty files:
+**here i downloaded the files and added in the merged sequences and removed a few sequences from previous analyses**
+**do do in the future, re-run Gpn1 - might have a reverse sequence to fix & figure out Rps6 there are two Psp sequences added, so i renamed the orthologs as name_ortho ** look into
 
-			find . -size 0 -delete
 
-		#####  Files in 263_genes_24april2021_VJR  will be the new 263_genes files that you will start this whole giant process with if you want to add subsequent species to protein phylogenies
 
-		Then make sure no contaminations or paralogs were missed by counting the number of sequences for the newly added taxa in each fasta (they should all be 1 or 0).
+Move the cleaned fasta files (.cleaned) to a new directory (renamed to 263_genes_11June2022_VJR). Enter this new directory and remove all empty files:
 
-		download all the *.cleaned files to make it easier to delete the more than 1 OTU
+	find . -size 0 -delete
+
+#####  Files in 263_genes_11June2022_VJR  will be the new 263_genes files that you will start this whole giant process with if you want to add subsequent species to protein phylogenies
+
+Then make sure no contaminations or paralogs were missed by counting the number of sequences for the newly added taxa in each fasta (they should all be 1 or 0).
+
+download all the *.cleaned files to make it easier to delete the more than 1 OTU; may count the # times the organism is present in the dataset
+- downloaded and re-uploaded modified fastas here
 
 			grep -c 'file' *.cleaned
+notes for this round:
+grep -c 'GB_who_decH9' *.cleaned
+grep -c 'Cur_GB1_H2803' *.cleaned
+grep -c 'Cur_GB2_H2806' *.cleaned
+grep -c 'Cur_GB3_H2810' *.cleaned
+grep -c 'Cur_GB4_H2813' *.cleaned
+grep -c 'Cur_GB5_H2815' *.cleaned
+grep -c 'GB_gonspo_decH7' *.cleaned #dont add to tree
+grep -c 'GB_spo_decH7' *.cleaned #dont add to tree
+grep -c 'mysid_parasite_3273_H1' *.cleaned #dont add to tree
+grep -c 'mysid_parasite_3537_H2' *.cleaned #dont add to tree
+grep -c 'copepod_infesting_alv_3147' *.cleaned #did i even add this one?**
+grep -c 'A_ocellatum' *.cleaned 
+grep -c 'GZC_10102021' *.cleaned 
+grep -c 'GZC_10142021' *.cleaned 
+grep -c 'M6' *.cleaned 
+grep -c 'Psp_2017_2020' *.cleaned 
+grep -c 'C34_2017_2020' *.cleaned 
 
 
-		may count the # times the organism is present in the dataset
-
-			grep -c 'Name' *.cleaned
-			grep -c 'Name' *.out
-
-		#Rename cleaned fasta files
-
+##### Rename cleaned fasta files
+If you want to rename -->
+**did not do it for the this round of analyses**
 rename: thecate_dino_exH11 to unknown_dino_exH11
 			unknown_112120-11 to unknown_dino_112120-11
 
 		for file in *.cleaned ; do sed 's/thecate_dino_exH11/unknown_dino_exH11/g' $file > $file.fixed ; done
-		rename 's/.cleaned.fixed/.cleaned/' *.fixed
-
-		for file in *.cleaned ; do sed 's/unknown_112120-11/unknown_dino_112120-11/g' $file > $file.fixed ; done
 		rename 's/.cleaned.fixed/.cleaned/' *.fixed
 
 		 Rename these cleaned_fastas
@@ -457,11 +474,10 @@ rename: thecate_dino_exH11 to unknown_dino_exH11
 
 		rename 's/.fasta.new.sl.cleaned/.fasta/' *.cleaned
 
+#### Make your tree
+##### tree 1 on soyouz
 
-old notes below, edit as you go 
-______________
-
-		##### Scafos : Concatentate 263 genes
+##### Scafos : Concatentate 263 genes
 		(on Soyouz: /opt/scafos/scafos)
 
 
