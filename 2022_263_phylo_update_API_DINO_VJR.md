@@ -486,7 +486,7 @@ jezero: /usr/local/bin/scafos
 
 Aligned all clean alignments with linsi (can do overnight in a screen)
 
-	for fasta in *.cleaned; do linsi --thread 24 $fasta > $cleaned.linsi; done
+	for fasta in *.fasta; do linsi --thread 24 $fasta > $fasta.linsi; done
 
 
 		## do next
