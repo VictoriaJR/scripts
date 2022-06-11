@@ -411,14 +411,16 @@ untrimmed protein sequences from the orginial files + the new dino sequences
 - Make single line format files from the .new files (will produce .sl files)
 
 
-			for file in *.new; do python /Data/victoria/scripts/single_line_fasta.py $file; done
-			rename 's/_coloured.tre/.fasta.new.linsi.trimal.clean.treefile_coloured/' *.tre
+`for file in *.new; do python /Data/victoria/scripts/single_line_fasta.py $file; done`
+`rename 's/_coloured.tre/.fasta.new.linsi.trimal.clean.treefile_coloured/' *.tre`
 
-		- Use the julia script to keep colored sequences from .new files using the corresponding colored trees:
-		- Move to rosetta
-		/Data/victoria/software/julia-1.5.3/bin/julia
+- Use the julia script to keep colored sequences from .new files using the corresponding colored trees:
+
+Move to rosetta
+
+	/Data/victoria/software/julia-1.5.3/bin/julia
 		include("/Data/victoria/scripts/Transcriptome.jl"); using .Transcriptome;
-		dir_extract_original_and_coloured_taxa("/Data/victoria/temp/", "ff0000")
+		dir_extract_original_and_coloured_taxa("/Data/victoria/263_june2022/coloured/", "ff0000")
 
 		Move the cleaned fasta files (.cleaned) to a new directory (ex. 263_genes_24april2021_VJR). Enter this new directory and remove all empty files:
 
