@@ -474,143 +474,106 @@ rename: thecate_dino_exH11 to unknown_dino_exH11
 
 		rename 's/.fasta.new.sl.cleaned/.fasta/' *.cleaned
 
+
+
 #### Make your tree
 ##### tree 1 on soyouz
 
 ##### Scafos : Concatentate 263 genes
 Soyouz: /opt/scafos/scafos
-jezero: /usr/local/bin/scafos
+jezero: /usr/local/bin/scafos (1.25)
 
-
-	screen -r 263
-
-Aligned all clean alignments with linsi (can do overnight in a screen)
+##### Aligned all clean alignments with linsi (can do overnight in a screen)
 
 	for fasta in *.fasta; do linsi --thread 24 $fasta > $fasta.linsi; done
 
 
-		## do next
-		Trim using trimal
+##### Trim using trimal (jezero)
 
-		    for linsi in *.linsi; do /opt/trimAl/source/trimal -in $linsi -out $linsi.trimal -gt 0.8; done
-		#soyouz
-			  for linsi in *.linsi; do trimal -in $linsi -out $linsi.trimal -gt 0.7; done
-
-		Move all trimmed files to a new folder named "scafos"
-
-		    mkdir scafos closest to home directory
-		    mv *.trimal /Data/victoria/scafos/
-
-		Change the names to GENE.fasta
-
-		    rename 's/.fasta.linsi.trimal/.fasta/' *.trimal
-
-		##### Open scafos on soyouz: (log in with -Y)
-
-		xs
-		LOGIN:
-
-		    ssh -Y victoria@soyouz.zoology.ubc.ca
-		    /opt/scafos/scafos
-
-		##### Troubleshooting (must fix before first step):
-
-		- To fix bad characters, remove them and replace them with a space:
-
-		      for file in *.fasta ; do sed 's/|/ /g' $file > $file.clean ; done
+    for i in *.linsi ; do trimal -in $i -out $i.trimal -gt 0.7 ; done
 
 
-		- Get rid of original .fastas and remove the ".clean" from the end of the new files:
+##### Move all trimmed files to a new folder named "scafos"
 
-		      rename 's/.fasta.clean/.fasta/' *.clean
+	mv *.trimal /Data/victoria/scafos/
 
-		- Other issues: files with empty sequences from trimming
+##### Change the names to GENE.fasta
 
-		  - NAA15
-		  - EFTUD1
-		  - BSM1
-		  - PRPF8
-		  - RPS19 (double abedinium seq: kept liz's)
+	rename 's/.fasta.linsi.trimal/.fasta/' *.trimal
 
+##### Open scafos jezero 
+	
+    ssh -Y victoria@soyouz.zoology.ubc.ca
+    /usr/local/bin/scafos
 
-		##### SPECIES PRESENCE
-		Download the species_presence-freq.otu file and delete the taxa that you do not want:
-		-Generally, remove all low % data species. The exception is a species that's really important for your species (in this case, I kept Oxyrrhis marina even though it was 32%)
-		-Figure out what your outgroup is (ciliates for me in this case) and get rid of everything more distantly related than that
-		-Keep the relevant species that have the highest data
+##### Troubleshooting (must fix before first step):
+- To fix bad characters, remove them and replace them with a space:
+- Get rid of original .fastas and remove the ".clean" from the end of the new files:
 
-		#### Stats of coverage across 263 genes
-		oodinium : oodinium (42%)
-		GB_spo_exH1 : GB_spo_exH1 (47%)
-		GB_gon_exH4 : GB_gon_exH4 (41%)
-		GB_spo_exH4 : GB_spo_exH4 (30%)
-		GB_mas_exH1 : GB_mas_exH1 (29%)
-		WBM_BH3 : WBM_BH3 (26%)
-		WB_gon_exH3 : WB_gon_exH3 (15%)
-		WB_spo_exH3 : WB_spo_exH3 (14%)
-		GB_spo_exH2 : GB_spo_exH2 (6%)
+	for file in *.fasta ; do sed 's/|/ /g' $file > $file.clean ; done
+	rename 's/.fasta.clean/.fasta/' *.clean
 
-		##### FILE SELECTION
-
-		2)Run 'file selection' in SCAFOS giving it the new species presence list (after removing taxa) as the OTU file (call the output directory 'file_selection').
-
-		Before doing this, remove random "bak" folder from your 'scafos' directory if there is one.
-		Files with ONLY the selected species will be in the output directory.
+-Other issues: files with empty sequences from trimming **just ran the script written in julia from above**
 
 
-		##### DATASET ASSEMBLING
+##### SPECIES PRESENCE
+- Download the species_presence-freq.otu file and delete the taxa that you do not want:
+- Generally, remove all low % data species. The exception is a species that's really important for your species (in this case, I kept Oxyrrhis marina even though it was 32%)
+- Figure out what your outgroup is (ciliates for me in this case) and get rid of everything more distantly related than that
+- Keep the relevant species that have the highest data
 
-		3)Run 'dataset assembling' on the directory containing the fasta with the selected species (it also needs the OTU file) and select 'longer sequence' in the selection criteria options
+#### Stats of coverage across 263 genes
 
-		In the output of dataset assembly download the .stat file. Open it in excel. Flip (or "transpose") the species and gene table so that genes are the rows. Sort the rows by missing data or otus. Highlight the genes above a certain threshold (ex. 40% missing data) and copy them into a file (ex. cat > genes_over_40.txt).
-		Genes over 40 actually means values less than 40 (since it is ' % missing OTUs')
-		Move the good genes to a new directory (make a directory called 'good_genes' first):
+##### FILE SELECTION
+- Run 'file selection' in SCAFOS giving it the new species presence list (after removing taxa) as the OTU file (call the output directory 'file_selection').
+- Before doing this, remove random "bak" folder from your 'scafos' directory if there is one.
+- Files with ONLY the selected species will be in the output directory.
 
-		for i in `less good_genes_may.txt` ; do cp /Data/victoria/file_selection/$i /Data/victoria/good_genes/ ; done
+***did not select the less than 40% OTUs for my first trees- i used all 263 gene trees***
+##### DATASET ASSEMBLING 
+- Run 'dataset assembling' on the directory containing the fasta with the selected species (it also needs the OTU file) and select 'longer sequence' in the selection criteria options
+- In the output of dataset assembly download the .stat file. Open it in excel. Flip (or "transpose") the species and gene table so that genes are the rows. Sort the rows by missing data or otus. Highlight the genes above a certain threshold (ex. 40% missing data) and copy them into a file (ex. cat > genes_over_40.txt).
+- Genes over 40 actually means values less than 40 (since it is ' % missing OTUs')
+- Move the good genes to a new directory (make a directory called 'good_genes' first):
 
-		for i in `less good_genes.txt` ; do cp /Data/victoria/scafos/file_selection/$i /Data/victoria/scafos/good_genes/ ; done
-		/Data/victoria/scafos/dataset_assembling
+	for i in `less good_genes_may.txt` ; do cp /Data/victoria/file_selection/$i /Data/victoria/good_genes/ ; done
 
-		##### SPECIES PRESENCE (Concatenate)
+	for i in `less good_genes.txt` ; do cp /Data/victoria/scafos/file_selection/$i /Data/victoria/scafos/good_genes/ ; done
 
-		Re-run 'species presence' on this new directory containing the good genes. When it asks if you want to concatenate, say yes. Name output directory 'concatenation_date'.
+##### SPECIES PRESENCE (Concatenate)
+- Re-run 'species presence' on this new directory containing the good genes. When it asks if you want to concatenate, say yes. Name output directory 'concatenation_date'.
 
-		##### MAKE TREE
+##### MAKE TREE
 
-		    FastTree cat_april162021.fasta > cat_april162021.fasta.fasttree
+	FastTree cat_april162021.fasta > cat_april162021.fasta.fasttree
 
-		    for file in *.fasta ; do iqtree-omp -m TEST -bb 1000 -nt 5 -s $file ; done
-
-		    ended up running RAxML for trees on compute canada
-		    /home/vjackor/scripts/Phylobayes_script.sh
-
-		    sbatch /home/vjackor/scripts/Phylobayes_script.sh  tree4_concat.fasta
-
-
-		transform data for phylobayes
-		#taxa #sites
-		name1 seq1.....
-		name2 seq2.....
-
-		61
-		currently looks like
-		>name1
-		seq1
-
-		add a ! at the end of each name that starts with a header
-
-		remove dino_
-		for file in *.fasta ; do sed 's/dino_//g' $file > $file.fixed ; done
-		for file in *.fixed ; do sed 's/Dinophyta_Dinophyceae-//g' $file > $file.2 ; done
-		for file in *.2 ; do sed 's/Pyrrophycophyta_Dinophyceae-//g' $file > $file.3 ; done
-
-		remove >
-		for file in *.3 ; do sed 's/>//g' $file > $file.4 ; done
-
-		place seq beside name -- tried to remove carriage return and spaces but nothing changed
-		for file in *.4 ; do sed 's/ //g' $file > $file.5 ; done
+	for file in *.fasta ; do iqtree-omp -m TEST -bb 1000 -nt 20 -s $file ; done
 
 
+**do this for my next tree**
+Clean up organism headers before running tree 
+**remove dino_**
+	
+    for file in *.fasta ; do sed 's/dino_//g' $file > $file.1 ; done
+	for file in *.1 ; do sed 's/Dinophyta_Dinophyceae-//g' $file > $file.2 ; done
+	for file in *.2 ; do sed 's/Pyrrophycophyta_Dinophyceae-//g' $file > $file.3 ; done
+	for file in *.3 ; do sed 's/Dinoflagellate-//g' $file > $file.4 ; done
+	for file in *.4 ; do sed 's/A_ocellatum/Amyloodinium_ocellatum/g' $file > $file.5 ; done
+
+
+
+
+
+### other phylogenetic estimations
+	
+    /home/vjackor/scripts/Phylobayes_script.sh
+    sbatch /home/vjackor/scripts/Phylobayes_script.sh  tree4_concat.fasta
+
+**remove >**
+	for file in *.3 ; do sed 's/>//g' $file > $file.4 ; done
+
+**place seq beside name -- tried to remove carriage return and spaces but nothing changed**
+	for file in *.4 ; do sed 's/ //g' $file > $file.5 ; done
 
 
 
