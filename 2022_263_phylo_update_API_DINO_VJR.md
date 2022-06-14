@@ -559,6 +559,15 @@ Clean up organism headers before running tree
 	for file in *.2 ; do sed 's/Pyrrophycophyta_Dinophyceae-//g' $file > $file.3 ; done
 	for file in *.3 ; do sed 's/Dinoflagellate-//g' $file > $file.4 ; done
 	for file in *.4 ; do sed 's/A_ocellatum/Amyloodinium_ocellatum/g' $file > $file.5 ; done
+	for file in *.5 ; do sed 's/Sarai//g' $file > $file.6 ; done
+
+	for file in *.6 ; do sed 's/C34_2017_2020/Colp-34_2017_2020/g' $file > $file.7 ; done
+	for file in *.7 ; do sed 's/Colp37_culture/Colp37_RNA/g' $file > $file.8 ; done
+	for file in *.8 ; do sed 's/Colp37_singlecell/Colp37_sc/g' $file > $file.9 ; done
+	for file in *.9 ; do sed 's/TGD_/TGD/g' $file > $file.10 ; done
+	for file in *.10 ; do sed 's/Polykrikos_lebourae_GG/Polykrikos_lebourae/g' $file > $file.11 ; done
+	for file in *.11 ; do sed 's/Psp_2017_2020/Psammosa_pacifica_2017_2020/g' $file > $file.12 ; done
+	for file in *.12 ; do sed 's/Colp-34_2017_2020/Colp34_2017_2020/g' $file > $file.13 ; done
 
 
 
