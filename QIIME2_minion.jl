@@ -1,49 +1,51 @@
 """
-    QIIME2_minion(dir_path, experiment_name, primers, steps)
-Execute the qiime2 pipeline consisting of the steps: "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
+    QIIME2_minion(dir_path, experiment_name, gene_amplicon_name, primer_set, steps)
+Execute the qiime2 pipeline consisting of the steps: "create_manifest", "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
 Inputs:
-`dir_path` = path to folder containing manifest file and sra_acc.txt file)
+`dir_path` = path to folder containing fastq files)
 `experiment_name` = e.g. David_may20_soil
-`primer_fwd` = e.g. ["forward_primer"]
-`primer_rev` = e.g. ["reverse_primer"]
+`gene_amplicon_name` = e.g. RbcL
+`primer_set` = Primer set name e.g. RbcL_set1.
+` add info here for primer sets
 `steps` = steps of the pipeline to run. Default to all.
 
 
 """
 
 
-function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, primer_fwd::AbstractString, primer_rev::AbstractString, steps=String[])
+function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, primer_set::AbstractString, steps=String[])
     if dir_path[end] != "/"
         dir_path *= "/"
     end
     isdir(dir_path) || return throw(ArgumentError(string("Input path ", dir_path, " is not a directory")))
 
-    check_download_fastq = false
+    check_create_manifest = false
     check_import_data = false
     check_trim_data = false
     check_derep_vsearch = false
     check_denovo_clus_OTU97 = false
     check_taxonomy_OTU = false
-    check_16S_taxonomy_filter = false
+    check_taxonomy_filter = false
     check_rename_OTU_tax = false
     check_phylogenetic_tree = false
 
 
     if isempty(steps)
-        check_download_fastq = true
+        check_create_manifest = true
         check_import_data = true
-        check_trim_data_1 = true
-        check_trim_data_2 = true
+        check_trim_data = true
         check_derep_vsearch = true
         check_denovo_clus_OTU97 = true
         check_taxonomy_OTU = true
-        check_16S_taxonomy_filter = true
+        check_taxonomy_filter = true
         check_rename_OTU_tax = true
         check_phylogenetic_tree = true
 
     else
         for step in steps
-            if step == "import_data"
+            if step == "create_manifest"
+                check_create_manifest = true
+            elseif step == "import_data"
                 check_import_data = true
             elseif step == "trim_data"
                 check_trim_data = true
@@ -66,8 +68,10 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
     end
 
 
+## 1. Create manifest file
+    
 
- ## 1. Import data
+ ## 2. Import data
 
     fastq_dir = dir_path * "fastq/"
     manifest_file = joinpath(dir_path, experiment_name * "_manifest.tsv")
