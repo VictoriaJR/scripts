@@ -9,14 +9,10 @@ include("QIIME2_minion.jl")
 
 # create tsv formatted manifest file
 function generate_manifest(dir_path, forward_primer, reverse_primer)
-    list_file_name = String[]
-    list_file_fastq = String[]
     manifest = dir_path * "/" * "manifest.tsv"
     open(manifest, "w") do io 
         title = "sample-id" * "\t" * "absolute-filepath" * "\t" *  "forward-primer-5-3" * "\t" * "reverse-primer-5-3" *  "\r" * "\n"
         write(io, title)
-        c = forward_primer
-        d = reverse_primer
         for f in readdir(dir_path; join = false)
             if isfile(f) && endswith(f, ".fastq")
                 suffix = length(".fastq")
