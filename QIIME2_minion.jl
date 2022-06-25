@@ -70,6 +70,8 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
 
 ## 1. Create manifest file
     
+    manifest_file = joinpath(dir_path, experiment_name * "_manifest.tsv")
+
 
  ## 2. Import data
 
