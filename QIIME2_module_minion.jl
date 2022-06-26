@@ -8,8 +8,8 @@ include("QIIME2_minion.jl")
 # utils 
 
 # create tsv formatted manifest file
-function generate_manifest(dir_path, forward_primer, reverse_primer)
-    manifest = dir_path * "/" * "manifest.tsv"
+function generate_manifest(dir_path, experiment_name, forward_primer, reverse_primer)
+    manifest = dir_path * "/" * experiment_name * "_" * "manifest.tsv"
     open(manifest, "w") do io 
         title = "sample-id" * "\t" * "absolute-filepath" * "\t" *  "forward-primer-5-3" * "\t" * "reverse-primer-5-3" *  "\r" * "\n"
         write(io, title)
