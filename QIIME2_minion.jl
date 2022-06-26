@@ -5,7 +5,7 @@ Inputs:
 `dir_path` = path to folder containing fastq files)
 `experiment_name` = e.g. David_may20_soil
 `gene_amplicon_name` = e.g. RbcL
-`primer_set` = Primer set name e.g. RbcL_set1.
+`primer_set` = Primer set name e.g. RbcL_1.
 ` add info here for primer sets
 `steps` = steps of the pipeline to run. Default to all.
 
@@ -93,7 +93,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
 ## 1. Create manifest file
     
     if check_create_manifest
-    generate_manifest(dir_path, experiment_name, forward_primer, reverse_primer)
+    generate_manifest(dir_path, experiment_name, primer_fwd, primer_rev)
 
 
  ## 2. Import data
@@ -204,6 +204,7 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
     
 ## 8. filter 16S data 
+if gene_amplicon_name !== 16S
     clean_table = joinpath(dir_path, "table-no-bacteria-no-archaea.qza")
     clean_seqs = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea.qza")
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
