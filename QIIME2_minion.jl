@@ -54,6 +54,18 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
             elseif step == "denovo_clus_OTU97"
                 check_denovo_clus_OTU97 = true
             elseif step == "taxonomy_OTU"
+                if db == "RbcL"
+                    ref_db_seqs = ""
+                    ref_db_tax = ""
+                elseif db == "18S"
+                    ref_db_seqs = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
+                    ref_db_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
+                elseif db == "16S"
+                    ref_db_seqs = ""
+                    ref_db_tax = ""
+                else
+                    return throw(ArgumentError(string("gene_amplicon_name", gene_amplicon_name, " is not valid")))
+                end
                 check_taxonomy_OTU = true
             elseif step == "16S_taxonomy_filter"
                 check_16S_taxonomy_filter = true
@@ -174,16 +186,14 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
 
 ## 7. Annotate OTUs 
-    silva_ref_seqs = joinpath(dir_path, "../ref_db/silva-138-99-seqs.qza")
-    silva_ref_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
     tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
     if check_taxonomy_OTU
         run(`qiime feature-classifier classify-consensus-blast
         --i-query $clus_seqs
-        --i-reference-reads $silva_ref_seqs
-        --i-reference-taxonomy $silva_ref_tax
+        --i-reference-reads $ref_db_seqs
+        --i-reference-taxonomy $ref_db_tax
         --o-classification $tax_OTU`)
         run(`qiime metadata tabulate
         --m-input-file $tax_OTU
@@ -204,13 +214,12 @@ clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
 
     
 ## 8. filter 16S data 
-if gene_amplicon_name !== 16S
     clean_table = joinpath(dir_path, "table-no-bacteria-no-archaea.qza")
     clean_seqs = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea.qza")
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
-    if check_16S_taxonomy_filter
+    if check_16S_taxonomy_filter && if gene_amplicon_name !== 16S
         run(`qiime taxa filter-table
         --i-table $clus_table
         --i-taxonomy $tax_OTU
