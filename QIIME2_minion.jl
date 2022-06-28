@@ -1,11 +1,12 @@
 """
-    QIIME2_minion(dir_path, experiment_name, gene_amplicon_name, primer_set, steps)
-Execute the qiime2 pipeline consisting of the steps: "create_manifest", "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU97", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
+    QIIME2_minion(dir_path, experiment_name, gene_amplicon_name, primer_set, cluster_perc, steps)
+Execute the qiime2 pipeline consisting of the steps: "create_manifest", "import_data", "trim_data", "derep_vsearch", "denovo_clus_OTU", "taxonomy_OTU", "16S_taxonomy_filter", "rename_OTU_tax" "phylogenetic_tree"
 Inputs:
 `dir_path` = path to folder containing fastq files)
 `experiment_name` = e.g. David_may20_soil
 `gene_amplicon_name` = e.g. RbcL
 `primer_set` = Primer set name e.g. RbcL_1.
+`cluster_perc = Cluster percent to use e.g. 97
 ` add info here for primer sets
 `steps` = steps of the pipeline to run. Default to all.
 
@@ -13,7 +14,7 @@ Inputs:
 """
 
 
-function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, primer_set::AbstractString, steps=String[])
+function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, gene_amplicon_name::AbstractString, primer_set::AbstractString, cluster_perc::AbstractString, steps=String[])
     if dir_path[end] != "/"
         dir_path *= "/"
     end
@@ -23,7 +24,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
     check_import_data = false
     check_trim_data = false
     check_derep_vsearch = false
-    check_denovo_clus_OTU97 = false
+    check_denovo_clus_OTU = false
     check_taxonomy_OTU = false
     check_taxonomy_filter = false
     check_rename_OTU_tax = false
@@ -35,7 +36,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
         check_import_data = true
         check_trim_data = true
         check_derep_vsearch = true
-        check_denovo_clus_OTU97 = true
+        check_denovo_clus_OTU = true
         check_taxonomy_OTU = true
         check_taxonomy_filter = true
         check_rename_OTU_tax = true
@@ -51,8 +52,8 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
                 check_trim_data = true
             elseif step == "derep_vsearch"
                 check_derep_vsearch = true
-            elseif step == "denovo_clus_OTU97"
-                check_denovo_clus_OTU97 = true
+            elseif step == "denovo_clus_OTU"
+                check_denovo_clus_OTU = true
             elseif step == "taxonomy_OTU"
                 if db == "RbcL"
                     ref_db_seqs = ""
@@ -156,19 +157,21 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
 
 ## 6. Cluster into OTUS 
 
-clus_table = joinpath(dir_path, "table-dn-97.qza")
-clus_seqs = joinpath(dir_path, "rep-seqs-dn-97.qza")
+clus_table = joinpath(dir_path, "table-dn-" * cluster_perc * ".qza")
+clus_seqs = joinpath(dir_path, "rep-seqs-dn-" * cluster_perc * ".qza")
 feature_table_out = joinpath(dir_path, "exported-feature-table/")
 feature_table_biom = feature_table_out * "feature-table.biom"
 feature_table_tsv = feature_table_out * "feature-table.tsv"
-clus_seqs_out = joinpath(dir_path, "rep-seqs-dn-97/")
+clus_seqs_out = joinpath(dir_path, "rep-seqs-dn-" * cluster_perc * "/")
 clus_seqs_fasta = clus_seqs_out * "dna-sequences.fasta"
+clust_perc = "0." * cluster_perc 
+                                
 
-    if check_denovo_clus_OTU97
+    if check_denovo_clus_OTU
         run(`qiime vsearch cluster-features-de-novo
         --i-table $derep_table
         --i-sequences $derep_seqs
-        --p-perc-identity 0.97
+        --p-perc-identity $clust_perc
         --o-clustered-table $clus_table 
         --o-clustered-sequences $clus_seqs
         --p-threads 4`)
