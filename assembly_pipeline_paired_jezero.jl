@@ -189,7 +189,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
 
     blastn_output_file = contamination_dir * "transcripts_vs_nt.blastn"
     if check_blastn_megablast
-        run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastn
+        run(`blastn
             -task megablast
             -query $transcripts_file
             -db /Data/databases/NT_blast/nt
