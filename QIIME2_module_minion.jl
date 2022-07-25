@@ -20,7 +20,6 @@ function generate_manifest(dir_path, experiment_name, primer_fwd, primer_rev)
                 filepath = dir_path * "/" * f 
                 write(io, f_name * "\t" * filepath * "\t" * primer_fwd * "\t" * primer_rev * "\r" * "\n")
             end
-            end
         end
     end
 end
