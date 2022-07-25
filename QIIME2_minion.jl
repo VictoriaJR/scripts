@@ -82,32 +82,33 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
 
 ## Identify primer sets
     # RbcL set 1: 1500bp diatom specific amplicon yield
-    if primer_set == RbcL_1
+    if primer_set == "RbcL_1"
         primer_fwd = "AAGGAGAAATHAATGTCT" #DPrbcL1
         primer_rev = "AARCAACCTTGTGTAAGTCTC" #DPrbcL7
         
-        
     # RbcL set 2: 1200bp diatom specific amplicon yield
-    if primer_set == RbcL_2
+    elseif primer_set == "RbcL_2"
         primer_fwd = "AAAAGTGACCGTTATGAATC" #NDrbcL2
         primer_rev = "CCAATAGTACCACCACCAAAT" #NDrbcL8       
     
     # 18S set (EukA & EukB primer set
-    if primer_set == 18S
+    elseif primer_set == "18S"
         primer_fwd = "AACCTGGTTGATCCTGCCAGT"
         primer_rev = "TGATCCTTCTGCAGGTTCACCTAC"
-
+    
     # 16S set 
-    if primer_set == 16S
+    elseif primer_set == "16S"
         primer_fwd = ""
         primer_rev = ""
-    
+    else
+        return throw(ArgumentError("primer_set not recognized"))
+    end
     
 ## 1. Create manifest file
     
     if check_create_manifest
     generate_manifest(dir_path, experiment_name, primer_fwd, primer_rev)
-
+    end
 
  ## 2. Import data
 
@@ -123,7 +124,6 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
             run(`qiime demux summarize
             --i-data $demux_file
             --o-visualization $(joinpath(dir_path, "single-end-demux.qzv"))`)
-        end
     end
 
 
