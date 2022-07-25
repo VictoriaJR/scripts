@@ -8,9 +8,6 @@ include("QIIME2_18S_db.jl")
 include("QIIME2_16S.jl")
     export QIIME2_16S
 
-include("QIIME2_minion.jl")
-    export QIIME2_minion
-
 # utils 
 
 # replace OTU headers with taxonomic annotation
