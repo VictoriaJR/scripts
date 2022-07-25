@@ -257,6 +257,7 @@ clust_perc = "0." * cluster_perc
 
 
 ## 10. Make phylogenetic tree
+    final_fasta = clean_seqs_fasta
     fasta_file_import = final_fasta * ".qza"
     fasta_file_import = joinpath(dir_path, "final_fasta_file/")
     aligned_seqs = joinpath(dir_path, "aligned-rep-seqs.qza")
