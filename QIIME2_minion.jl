@@ -252,8 +252,6 @@ clust_perc = "0." * cluster_perc
     if check_rename_OTU_tax
         final_fasta = joinpath(clean_seqs_out, ".taxonomy")
         replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_txt, experiment_name)
-    else
-        return throw(ArgumentError(string("Rename error")))
     end
 
 
