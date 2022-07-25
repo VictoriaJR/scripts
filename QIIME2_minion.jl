@@ -26,6 +26,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
     check_derep_vsearch = false
     check_denovo_clus_OTU = false
     check_taxonomy_OTU = false
+    check_16S_taxonomy_filter = false
     check_taxonomy_filter = false
     check_rename_OTU_tax = false
     check_phylogenetic_tree = false
@@ -38,6 +39,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
         check_derep_vsearch = true
         check_denovo_clus_OTU = true
         check_taxonomy_OTU = true
+        check_16S_taxonomy_filter = true
         check_taxonomy_filter = true
         check_rename_OTU_tax = true
         check_phylogenetic_tree = true
