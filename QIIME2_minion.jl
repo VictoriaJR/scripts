@@ -222,7 +222,7 @@ clust_perc = "0." * cluster_perc
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
-    if check_16S_taxonomy_filter && if gene_amplicon_name != "16S"
+    if check_16S_taxonomy_filter && gene_amplicon_name != "16S"
         run(`qiime taxa filter-table
         --i-table $clus_table
         --i-taxonomy $tax_OTU
