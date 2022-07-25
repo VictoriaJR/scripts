@@ -209,7 +209,7 @@ clust_perc = "0." * cluster_perc
         run(`qiime tools export
         --input-path $tax_OTU
         --output-path $tax_OTU_out`) # file used for annotation of OTUs 
-        !if check_16S_taxonomy_filter
+        if !check_16S_taxonomy_filter
             replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt, experiment_name)
         end
     end
@@ -222,7 +222,7 @@ clust_perc = "0." * cluster_perc
     clean_tax_table = joinpath(dir_path, "taxonomy-no-bacteria-no-archaea.qza")
     clean_seqs_out = joinpath(dir_path, "sequences-with-phyla-no-bacteria-no-archaea/")
     clean_seqs_fasta = clean_seqs_out * "dna-sequences.fasta"
-    if check_16S_taxonomy_filter && if gene_amplicon_name !== 16S
+    if check_16S_taxonomy_filter && if gene_amplicon_name != "16S"
         run(`qiime taxa filter-table
         --i-table $clus_table
         --i-taxonomy $tax_OTU
