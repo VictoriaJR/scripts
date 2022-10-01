@@ -246,28 +246,28 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         run(`samtools view -@ 6 -b -S $bowtie2_output_file -o $output_bam`)
         run(`samtools sort -@ 6 $output_bam -o $output_sorted_bam`)
         run(`samtools index $output_sorted_bam`)
-        run(`blobtools taxify
+        run(`/opt/blobtools/blobtools taxify
             -f $blastx_output_file
             -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
             -s 0
             -t 2`)
-        run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
-        run(`blobtools create
+        run(`/opt/blobtools/blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
+        run(`/opt/blobtools/blobtools create
             -i $transcripts_file
             -t $blastn_output_file
             -t $blobtools_taxify_output_file
             -c $blobtools_map2cov_output_file
             -o $blobtools_prefix`)
-        run(`blobtools plot
+        run(`/opt/blobtools/blobtools plot
             --infile $blobtools_create_output_file
             --rank family`)
-        run(`blobtools plot
+        run(`/opt/blobtools/blobtools plot
             --infile $blobtools_create_output_file
             --rank phylum`)
-        run(`blobtools plot
+        run(`/opt/blobtools/blobtools plot
             --infile $blobtools_create_output_file
             --rank superkingdom`)
-        run(`blobtools view
+        run(`/opt/blobtools/blobtools view
             --input $blobtools_create_output_file
             --out taxonomy
             --rank all
