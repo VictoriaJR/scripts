@@ -210,7 +210,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
             --max-target-seqs 1
             --sensitive
             --threads 24
-            --db /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.dmnd
+            --db /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.dmnd
             --evalue 1e-25
             --outfmt 6
             --out $blastx_output_file`)
