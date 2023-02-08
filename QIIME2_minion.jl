@@ -57,7 +57,7 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
             elseif step == "denovo_clus_OTU"
                 check_denovo_clus_OTU = true
             elseif step == "taxonomy_OTU"
-                if db == "RbcL"
+                if primer_set == "RbcL_1"
                     ref_db_seqs = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.qza"
                     ref_db_tax = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.tax.qza"
                 elseif db == "18S"
