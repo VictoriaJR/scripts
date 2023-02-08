@@ -194,6 +194,8 @@ clust_perc = "0." * cluster_perc
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
     tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
+    ref_db_seqs = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.qza"
+    ref_db_tax = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.tax.qza"
     if check_taxonomy_OTU
         run(`qiime feature-classifier classify-consensus-blast
         --i-query $clus_seqs
