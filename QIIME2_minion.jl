@@ -193,7 +193,7 @@ clust_perc = "0." * cluster_perc
 ## 7. Annotate OTUs 
     tax_OTU = joinpath(dir_path,  "taxonomy.qza")
     tax_OTU_out = joinpath(dir_path, "taxonomy/")
-    tax_OTU_txt = tax_OTU_out * "taxonomy.txt"
+    tax_OTU_tsv = tax_OTU_out * "taxonomy.tsv"
     ref_db_seqs = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.qza"
     ref_db_tax = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.tax.qza"
     if check_taxonomy_OTU
@@ -214,7 +214,7 @@ clust_perc = "0." * cluster_perc
         --input-path $tax_OTU
         --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         if !check_16S_taxonomy_filter
-            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_txt, experiment_name)
+            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_tsv, experiment_name)
         end
     end
 
@@ -253,7 +253,7 @@ clust_perc = "0." * cluster_perc
 
     if check_rename_OTU_tax
         final_fasta = joinpath(clean_seqs_out, ".taxonomy")
-        replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_txt, experiment_name)
+        replace_OTU_header_taxonomy(clean_seqs_fasta, tax_OTU_tsv, experiment_name)
     end
 
 
