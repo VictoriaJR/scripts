@@ -40,7 +40,7 @@ function replace_OTU_header_taxonomy(fasta_file, taxonomy_file, experiment_name)
     open(new_file, "w") do io
         for (i,line) in enumerate(fasta_lines)
             id_seq = split(line, "\n"; limit = 2)
-            write(io, ">" * bioproject * "_OTU_" * string(i) * "_" * d[strip(id_seq[1], '\r')] * "\n" * id_seq[2])
+            write(io, ">" * experiment_name * "_OTU_" * string(i) * "_" * d[strip(id_seq[1], '\r')] * "\n" * id_seq[2])
         end
     end
     return new_file
