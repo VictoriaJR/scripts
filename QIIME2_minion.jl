@@ -14,7 +14,7 @@ Inputs:
 """
 
 
-function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, gene_amplicon_name::AbstractString, primer_set::AbstractString, cluster_perc::AbstractString, db::AbstractString, steps=String[])
+function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString, gene_amplicon_name::AbstractString, primer_set::AbstractString, cluster_perc::AbstractString, steps=String[])
     if dir_path[end] != "/"
         dir_path *= "/"
     end
@@ -57,13 +57,13 @@ function QIIME2_minion(dir_path::AbstractString, experiment_name::AbstractString
             elseif step == "denovo_clus_OTU"
                 check_denovo_clus_OTU = true
             elseif step == "taxonomy_OTU"
-                if db == "RbcL"
+                if gene_amplicon_name == "RbcL"
                     ref_db_seqs = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.qza"
                     ref_db_tax = "/Data/victoria/Qiime2/RbcL_project/database/rbcL/rbcl_seqs_diat.barcode.tax.qza"
-                elseif db == "18S"
+                elseif gene_amplicon_name == "18S"
                     ref_db_seqs = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
                     ref_db_tax = joinpath(dir_path, "../ref_db/silva-138-99-tax.qza")
-                elseif db == "16S"
+                elseif gene_amplicon_name == "16S"
                     ref_db_seqs = ""
                     ref_db_tax = ""
                 else
