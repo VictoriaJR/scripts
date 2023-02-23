@@ -248,7 +248,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         run(`samtools index $output_sorted_bam`)
         run(`/opt/blobtools/blobtools taxify
             -f $blastx_output_file
-            -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
+            -m /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.taxid_map
             -s 0
             -t 2`)
         run(`/opt/blobtools/blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
