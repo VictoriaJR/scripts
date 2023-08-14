@@ -24,7 +24,7 @@ function generate_manifest(dir_path, experiment_name, primer_fwd, primer_rev)
     end
 end
 
-# replace OTU headers with taxonomic annotation
+# replace OTU headers with taxonomic annotation #leaving out unassigned taxa (several sequences appeared to be adapters)
 function replace_OTU_header_taxonomy(fasta_file, taxonomy_file, experiment_name)
     d = Dict{String, Tuple{String, String}}()  # Use a tuple to store DNA sequence and taxonomy
     for line in eachline(taxonomy_file)
@@ -45,9 +45,14 @@ function replace_OTU_header_taxonomy(fasta_file, taxonomy_file, experiment_name)
         
         if haskey(d, taxonomy_id)
             taxonomy_affiliation, sequence = d[taxonomy_id]
-            modified_header = ">" * experiment_name * "_OTU_" * string(i) * "_" * taxonomy_affiliation
-            modified_seq = modified_header * "\n" * id_seq[2]
-            push!(modified_seqs, modified_seq)
+            
+            if !contains(taxonomy_affiliation, "Unassigned")
+                modified_header = ">" * experiment_name * "_OTU_" * string(i) * "_" * taxonomy_affiliation
+                modified_seq = modified_header * "\n" * id_seq[2]
+                push!(modified_seqs, modified_seq)
+            else
+                println("Warning: Sequence ", i, " has 'Unassigned' affiliation and will be skipped.")
+            end
         else
             println("Warning: Taxonomy ID not found for sequence ", i)
         end
