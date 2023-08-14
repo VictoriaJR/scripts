@@ -214,7 +214,7 @@ clust_perc = "0." * cluster_perc
         --input-path $tax_OTU
         --output-path $tax_OTU_out`) # file used for annotation of OTUs 
         if !check_16S_taxonomy_filter
-            replace_OTU_header_taxonomy(clus_seqs, tax_OTU_tsv, experiment_name)
+            replace_OTU_header_taxonomy(clus_seqs_fasta, tax_OTU_tsv, experiment_name)
         end
     end
 
