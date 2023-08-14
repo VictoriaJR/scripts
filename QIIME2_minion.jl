@@ -259,9 +259,9 @@ clust_perc = "0." * cluster_perc
 
 
 ## 10. Make phylogenetic tree
-    final_fasta = clean_seqs_fasta
-    fasta_file_import = final_fasta * ".qza"
-    fasta_file_import = joinpath(dir_path, "final_fasta_file/")
+    renamed_fasta = clus_seqs_fasta * ".taxonomy"
+    fasta_file_import = renamed_fasta * ".qza"
+    fasta_file_import = joinpath(dir_path, "renamed_fasta/")
     aligned_seqs = joinpath(dir_path, "aligned-rep-seqs.qza")
     masked_alignment = joinpath(dir_path, "masked-aligned-rep-seqs.qza")
     unrooted_tree = joinpath(dir_path, "unrooted-tree/")
@@ -270,7 +270,7 @@ clust_perc = "0." * cluster_perc
     rooted_tree_out = joinpath(dir_path, "rooted-tree/")
     if check_phylogenetic_tree
         run(`qiime tools import
-        --input-path $final_fasta
+        --input-path $renamed_fasta
         --output-path $fasta_file_import
         --type 'FeatureData[Sequence]'`)
         run(`qiime phylogeny align-to-tree-mafft-fasttree
