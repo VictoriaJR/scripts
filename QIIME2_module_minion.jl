@@ -26,25 +26,40 @@ end
 
 # replace OTU headers with taxonomic annotation
 function replace_OTU_header_taxonomy(fasta_file, taxonomy_file, experiment_name)
-    d = Dict{String, String}()
+    d = Dict{String, Tuple{String, String}}()  # Use a tuple to store DNA sequence and taxonomy
     for line in eachline(taxonomy_file)
-        tmp = split(line, "\t"; limit = 3, keepempty = false)
+        tmp = split(strip(line), "\t"; limit = 3, keepempty = false)
         if length(tmp) ≥ 2
-            taxonomy_id_1 = tmp[1]
-            taxonomy_id_2 = tmp[2]
-            push!(d, taxonomy_id_1 => taxonomy_id_2)
+            taxonomy_id = tmp[1]
+            taxonomy_affiliation = tmp[2]
+            d[taxonomy_id] = (taxonomy_affiliation, "")
         end
     end
+    
     fasta_lines = split(read(fasta_file, String), ">"; keepempty = false)
+    modified_seqs = Vector{String}()
+    
+    for (i, line) in enumerate(fasta_lines)
+        id_seq = split(strip(line), "\n"; limit = 2)
+        taxonomy_id = strip(id_seq[1])
+        
+        if haskey(d, taxonomy_id)
+            taxonomy_affiliation, sequence = d[taxonomy_id]
+            modified_header = ">" * experiment_name * "_OTU_" * string(i) * "_" * taxonomy_affiliation
+            modified_seq = modified_header * "\n" * id_seq[2]
+            push!(modified_seqs, modified_seq)
+        else
+            println("Warning: Taxonomy ID not found for sequence ", i)
+        end
+    end
+    
     new_file = fasta_file * ".taxonomy"
     open(new_file, "w") do io
-        for (i,line) in enumerate(fasta_lines)
-            id_seq = split(line, "\n"; limit = 2)
-            write(io, ">" * experiment_name * "_OTU_" * string(i) * "_" * d[strip(id_seq[1], '\r')] * "\n" * id_seq[2])
-        end
+        write(io, join(modified_seqs, "\n"))
     end
+    
     return new_file
-end 
+end
 
 function OTUs_per_SRA_experiment(feature_table)
     df = DataFrame(CSV.File(feature_table; delim = "\t", header = 2))
