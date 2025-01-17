@@ -152,7 +152,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
         if !isdir(rnaspades_dir)
             mkdir(rnaspades_dir)
         end
-        run(`/opt/spades_3.15.5/bin/rnaspades.py
+        run(`/opt/SPAdes-3.15.5/bin/rnaspades.py
             --pe1-1 $cutadapt_output_file
             --pe1-2 $cutadapt_paired_output_file
             --threads 24
