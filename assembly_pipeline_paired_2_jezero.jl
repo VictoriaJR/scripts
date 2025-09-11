@@ -184,7 +184,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
 
     blastn_output_file = contamination_dir * "transcripts_vs_nt.blastn"
     if check_blastn_megablast
-        run(`/usr/bin/ncbi-blast-2.11.0+-src/c++/ReleaseMT/bin/blastn
+        run(`/opt/ncbi-blast-2.14.1+/bin/blastn
             -task megablast
             -query $transcripts_file
             -db /Data/databases/NT_blast/nt
@@ -205,7 +205,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
             --max-target-seqs 1
             --sensitive
             --threads 24
-            --db /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.dmnd
+            --db /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.dmnd
             --evalue 1e-25
             --outfmt 6
             --out $blastx_output_file`)
@@ -243,7 +243,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
         run(`samtools index $output_sorted_bam`)
         run(`blobtools taxify
             -f $blastx_output_file
-            -m /Data/databases/uniprot_ref_diamond/uniprot_ref_proteomes.taxids
+            -m /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.taxid_map
             -s 0
             -t 2`)
         run(`blobtools map2cov -i $transcripts_file -b $output_sorted_bam`)
@@ -334,7 +334,7 @@ function transcriptome_assembly_paired_2_jezero(dir_path::AbstractString, organi
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
         database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta.blastDB"
         for f in readdir("/Data/databases/uniprot_sprot_blast/"; join = false)
-            if startswith(f, "uniprot_sprot_")
+            if startswith(f, "uniprot_sprot")
                 database *= f
                 break
             end
