@@ -98,10 +98,10 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
     # use CUTADAPT to remove adapters from paired-end reads
 
     cutadapt_dir = dir_path * "cutadapt/"
-    cutadapt_output_file1 = cutadapt_dir * organism * "_S9_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S9_R2_001.cutadapt.fastq"
-    cutadapt_output_file2 = cutadapt_dir * organism * "_S11_R1_001.cutadapt.fastq"
-    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S11_R2_001.cutadapt.fastq"
+    cutadapt_output_file1 = cutadapt_dir * organism * "_S33_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file1 = cutadapt_dir * organism * "_S33_R2_001.cutadapt.fastq"
+    cutadapt_output_file2 = cutadapt_dir * organism * "_S34_R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file2 = cutadapt_dir * organism * "_S34_R2_001.cutadapt.fastq"
     if check_cutadapt
         if !isdir(cutadapt_dir)
             mkdir(cutadapt_dir)
