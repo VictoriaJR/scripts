@@ -1,5 +1,5 @@
 """
-    MODIFIED FOR OODINIUM transcriptome_assembly(dir_path, organism, lineage_dataset, prey, steps)
+    MODIFIED FOR Blastodinium transcriptome_assembly(dir_path, organism, lineage_dataset, prey, steps)
 
 Execute the transcriptome assembly pipeline consisting of the steps: "fastqc", "cutadapt", "rnaspades", "busco", "blastn_megablast", "diamond_blastx", "bowtie2", "blobtools", "contamination_removal", "prey_removal", "transdecoder".
 Inputs:
