@@ -145,7 +145,7 @@ function transcriptome_assembly_paired_jezero(dir_path::AbstractString, organism
 
     # use SPADES to assemble
 
-     rnaspades_dir = dir_path * "../" * organism * "_rnaspades/"
+    # rnaspades_dir = dir_path * "../" * organism * "_rnaspades/"
     # rnaspades_dir = joinpath(dir_path, "..", organism, "_rnaspades")
     
     if check_rnaspades
