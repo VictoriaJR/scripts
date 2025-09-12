@@ -139,7 +139,7 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
         if !isdir(rnaspades_dir)
             mkdir(rnaspades_dir)
         end
-        run(`/Data/victoria/software/SPAdes-3.15.0-Linux/bin/spades.py
+        run(`/opt/SPAdes-3.15.5/bin/rnaspades.py
             --rna
             --pe1-1 $cutadapt_output_file1
             --pe1-2 $cutadapt_paired_output_file1
