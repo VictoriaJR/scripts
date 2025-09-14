@@ -196,12 +196,12 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
 
     blastx_output_file = contamination_dir * "transcripts.fasta.vs.uniprot_ref.mts1.1e25.out"
     if check_diamond_blastx
-        run(`/home/glax/miniconda3/bin/diamond blastx
+        run(`diamond blastx
             --query $transcripts_file
             --max-target-seqs 1
             --sensitive
             --threads 24
-            --db /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.diamond.dmnd
+            --db /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.dmnd
             --evalue 1e-25
             --outfmt 6
             --out $blastx_output_file`)
@@ -234,7 +234,7 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
         cd(contamination_dir)
         run(`/opt/blobtools/blobtools taxify
             -f $blastx_output_file
-            -m /Data/databases/uniprot_ref_v2020.06_diamond/uniprot_ref_proteomes.taxids
+            -m /Data/databases/uniprot_ref_diamond_2022/reference_proteomes.taxid_map
             -s 0
             -t 2`)
         run(`/opt/blobtools/blobtools map2cov -i $transcripts_file -s $bowtie2_output_file`)
@@ -309,9 +309,9 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
-        database = "/Data/databases/uniprot_sprot_2020.12.02/uniprot_sprot.fasta"
-        for f in readdir("/Data/databases/uniprot_sprot_2020.12.02/"; join = false)
-            if startswith(f, "uniprot_sprot_")
+        database = "/Data/databases/uniprot_sprot_blast/uniprot_sprot.fasta.blastDB"
+        for f in readdir("/Data/databases/uniprot_sprot_blast/"; join = false)
+            if startswith(f, "uniprot_sprot")
                 database *= f
                 break
             end
