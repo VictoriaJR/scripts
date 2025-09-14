@@ -183,7 +183,7 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
         run(`blastn
             -task megablast
             -query $transcripts_file
-            -db /Data/databases/NCBI_NT/nt
+            -db /Data/databases/NT_blast/nt
             -outfmt '6 qseqid staxids bitscore std ssciorganisms sskingdoms stitle'
             -culling_limit 5
             -num_threads 24
