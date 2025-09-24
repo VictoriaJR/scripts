@@ -305,7 +305,7 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
         cd(rnaspades_dir)
         # Identify the ORFs in the cleaned fasta assembly using ###TransDecoder:
 
-        run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.3.0/TransDecoder.LongOrfs -t $clean_transcripts_file`)
+        run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.5.0/TransDecoder.LongOrfs -t $clean_transcripts_file`)
         # Outputs peptides in a new TransDecoder directory as a file named "long_orfs.pep".
 
         # blast the ORFs against the Swissprot database to find ORFs that have possible matches to known proteins:
@@ -328,7 +328,7 @@ function transcriptome_assembly_paired_2_transcriptomes(dir_path::AbstractString
 
         # Run the final ORF annotation using TransDecoder and tell it to include the ORFs that were identified in the Blast search as being things that matched to lessen the chance that they are lost in TransDecoder:
 
-        run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.3.0/TransDecoder.Predict
+        run(`perl5.18.2 /opt/TransDecoder-TransDecoder-v5.5.0/TransDecoder.Predict
             -t $clean_transcripts_file
             --retain_blastp_hits $blastp_output`)
         cd(path_)
