@@ -1,0 +1,42 @@
+function cutadapt(dir_path::AbstractString)
+    if dir_path[end] != "/"
+        dir_path *= "/"
+    end
+    isdir(dir_path) || return throw(ArgumentError(string("Input path ", dir_path, " is not a directory")))
+
+    for dir in dir_path
+        if isdir(dir; join=true)
+        readdir(d, dir)
+        for f in d
+            if isfile(f, d) && endswith(f, "_001.fastq.gz")
+            forward = 
+
+    cutadapt_output_file =  *   "R1_001.cutadapt.fastq"
+    cutadapt_paired_output_file =  * "R2_001.cutadapt.fastq"
+
+    if check_cutadapt
+        if !isdir(cutadapt_dir)
+            mkdir(cutadapt_dir)
+
+        # run(`cutadapt
+        #     -a AGATGTGTATAAGAGACAG
+        #     -a AAGCAGTGGTATCAACGCAGAGT
+        #     -a AGATGTGTATAAGAGACAG
+        #     -a AAGCAGTGGTATCAACGCAGAGT
+        #     -a TACTCTGCGTTGATACCACTGCTT
+        #     -a ACTCTGCGTTGATACCACTGCTT
+        #     -a TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+        #     -a CTGTCTCTTATACACATCTGACGCTGCCGACGA
+        #     -a CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
+        #     -a AGATGTGTATAAGAGACAG
+        #     -A AAGCAGTGGTATCAACGCAGAGT
+        #     -A TACTCTGCGTTGATACCACTGCTT
+        #     -A ACTCTGCGTTGATACCACTGCTT
+        #     -A TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG
+        #     -A CTGTCTCTTATACACATCTGACGCTGCCGACGA
+        #     -A CTGTCTCTTATACACATCTCCGAGCCCACGAGAC
+        #     -o $cutadapt_output_fileA1
+        #     -p $cutadapt_paired_output_fileA2
+        #     $raw_seq_reads_A1 $raw_seq_reads_A2`)
+    #
+    # end
