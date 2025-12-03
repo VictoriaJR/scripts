@@ -1,7 +1,4 @@
-function cutadapt(
-    dir_path::AbstractString,
-    organism::AbstractString
-)
+function cutadapt(dir_path::AbstractString, organism::AbstractString)
 
     # Normalize directory path
     dir_path = endswith(dir_path, "/") ? dir_path : dir_path * "/"
